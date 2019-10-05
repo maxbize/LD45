@@ -19,7 +19,7 @@ public class ShipPart : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-
+        health = maxHealth;
     }
 
     // Update is called once per frame
@@ -28,7 +28,6 @@ public class ShipPart : MonoBehaviour
     }
 
     public void Initialize() {
-        health = maxHealth;
         controller = GetComponentInParent<ShipController>();
     }
 
@@ -38,5 +37,11 @@ public class ShipPart : MonoBehaviour
         if (health <= 0) {
             Destroy(gameObject);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        ShipPart otherPart = collision.collider.GetComponent<ShipPart>();
+        int damage = (int)collision.relativeVelocity.magnitude * 10;
+        TakeDamage(damage);
     }
 }
