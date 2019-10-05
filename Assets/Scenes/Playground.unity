@@ -2165,8 +2165,6 @@ MonoBehaviour:
   gridSlotBackgroundPrefab: {fileID: 3360537401254268683, guid: d919f7622e5ca7245b4b1c8add34ebd3,
     type: 3}
   gridSlotSelectedObj: {fileID: 1692039134}
-  debugShipPartPrefab: {fileID: 48833394188314167, guid: 6240d73a91617ad4ab298d9476e42736,
-    type: 3}
   partSelectPanel: {fileID: 0}
   partSelectButtons:
   - {fileID: 1261811328}

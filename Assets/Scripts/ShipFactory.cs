@@ -36,14 +36,10 @@ public class ShipFactory : MonoBehaviour
         int numParts = 0;
         foreach (ShipPart part in parts) {
             if (part != null) {
+                part.Initialize();
+
                 center += part.transform.position;
                 numParts++;
-                
-                // Load any extra prefabs the part requires
-                if (part.data.childPrefabName != null) {
-                    GameObject prefab = (GameObject)Resources.Load("Prefabs/" + part.data.childPrefabName);
-                    Instantiate(prefab, part.transform);
-                }
             }
         }
         center /= numParts;

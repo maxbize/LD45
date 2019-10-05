@@ -10,6 +10,8 @@ public class ShipPart : MonoBehaviour
     public ShipPartData data; // HACK! Set from factory. GameObject, so no constructor :(
 
     private ParticleSystem childParticles;
+    private float timer;
+    private GameObject cachedChildPrefab;
 
     // Start is called before the first frame update
     void Start() {
@@ -19,6 +21,15 @@ public class ShipPart : MonoBehaviour
     // Update is called once per frame
     void Update() {
 
+    }
+
+    public void Initialize() {
+        if (data.type == ShipPartData.Type.Thruster) {
+            GameObject prefab = (GameObject)Resources.Load("Prefabs/" + data.GetExhaustPrefab());
+            Instantiate(prefab, transform);
+        } else if (data.type == ShipPartData.Type.MachineGun) {
+            cachedChildPrefab = (GameObject)Resources.Load("Prefabs/" + data.GetProjectilePrefab());
+        }
     }
 
     private void CheckType(ShipPartData.Type type) {
@@ -43,5 +54,14 @@ public class ShipPart : MonoBehaviour
         }
         ParticleSystem.EmissionModule emission = childParticles.emission;
         emission.enabled = enabled;
+    }
+
+    public void Attack() {
+        CheckType(ShipPartData.Type.MachineGun);
+        if (Time.timeSinceLevelLoad > timer) {
+            timer = Time.timeSinceLevelLoad + data.GetWeaponCooldown();
+            GameObject projectile = Instantiate(cachedChildPrefab, transform.position, transform.rotation);
+            projectile.layer = gameObject.layer;
+        }
     }
 }

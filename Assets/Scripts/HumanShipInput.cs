@@ -11,6 +11,7 @@ public class HumanShipInput : MonoBehaviour
     private bool down;
     private bool right;
     private bool left;
+    private bool attack;
 
     // Start is called before the first frame update
     void Start() {
@@ -23,9 +24,13 @@ public class HumanShipInput : MonoBehaviour
         down = Input.GetKey(KeyCode.DownArrow);
         right = Input.GetKey(KeyCode.RightArrow);
         left = Input.GetKey(KeyCode.LeftArrow);
+        attack = Input.GetKey(KeyCode.Space);
     }
 
     private void FixedUpdate() {
         shipController.Move(up, down, right, left);
+        if (attack) {
+            shipController.Attack();
+        }
     }
 }

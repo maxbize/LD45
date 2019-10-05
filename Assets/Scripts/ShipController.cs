@@ -14,6 +14,7 @@ public class ShipController : MonoBehaviour
     private List<ShipPart> positiveTorqueThrusters = new List<ShipPart>(); // Thrusters used in right turn - can be on both sides
     private List<ShipPart> negativeTorqueThrusters = new List<ShipPart>(); // Thrusters used in left turn - can be on both sides
     private List<ShipPart> thrusters = new List<ShipPart>();
+    private List<ShipPart> weapons = new List<ShipPart>();
     private Rigidbody2D rb;
 
     // Start is called before the first frame update
@@ -53,11 +54,15 @@ public class ShipController : MonoBehaviour
                         negativeTorqueThrusters.Add(part);
                     }
                 }
-
+            } else if (part.data.type == ShipPartData.Type.MachineGun) {
+                weapons.Add(part);
             }
 
             // Set density. Every part has the same volume, so just use mass directly
             part.GetComponent<Collider2D>().density = part.data.mass;
+
+            // Tag to the same layer as the parent
+            part.gameObject.layer = gameObject.layer;
         }
     }
 
@@ -88,6 +93,12 @@ public class ShipController : MonoBehaviour
             } else {
                 thruster.DisableThruster();
             }
+        }
+    }
+
+    public void Attack() {
+        foreach (ShipPart weapon in weapons) {
+            weapon.Attack();
         }
     }
 }

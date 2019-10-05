@@ -10,7 +10,6 @@ public class ShipBuilderManager : MonoBehaviour
     // Set in editor
     public Transform gridSlotBackgroundPrefab;
     public Transform gridSlotSelectedObj; // highlights the currently selected slot
-    public Transform debugShipPartPrefab;
     public RectTransform partSelectPanel;
     public RectTransform[] partSelectButtons;
     public Button rotatePartButton;
