@@ -24,11 +24,13 @@ public class ShipBuilderManager : MonoBehaviour
     private int width;
     private int height;
     private Transform inFlightPart; // The part the user has selected to place but has not yet placed
+    private GameObject[,] gridParts;
 
     // Start is called before the first frame update
     void Start() {
         width = 3;
         height = 3; // TODO: Get these from somewhere
+        gridParts = new GameObject[width, height];
         gridSlotSelectedObj.gameObject.SetActive(false);
         SetupPartSelectionUI();
         SetupSelectedPartUI(0);
@@ -99,11 +101,20 @@ public class ShipBuilderManager : MonoBehaviour
         if (inFlightPart == null) {
 
         } else {
+            RemovePartFromGrid(x, y);
+            gridParts[x, y] = inFlightPart.gameObject;
             inFlightPart.transform.position = new Vector2(x, y);
             inFlightPart = null;
         }
         gridSlotSelectedObj.gameObject.SetActive(true);
         gridSlotSelectedObj.transform.position = new Vector2(x, y);
+    }
+
+    private void RemovePartFromGrid(int x, int y) {
+        if (gridParts[x, y] != null) {
+            // TODO: Put back in inventory
+            Destroy(gridParts[x, y]);
+        }
     }
 
     public void OnPartScrollButton(bool upArrow) {
