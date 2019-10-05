@@ -25,9 +25,12 @@ public class ShipBuilderManager : MonoBehaviour
     private int height;
     private Transform inFlightPart; // The part the user has selected to place but has not yet placed
     private GameObject[,] gridParts;
+    private ShipPartData selectedPart; // Selected on the right, not the left!
+    private ShipFactory shipFactory;
 
     // Start is called before the first frame update
     void Start() {
+        shipFactory = FindObjectOfType<ShipFactory>();
         width = 3;
         height = 3; // TODO: Get these from somewhere
         gridParts = new GameObject[width, height];
@@ -58,12 +61,12 @@ public class ShipBuilderManager : MonoBehaviour
 
     // Top screen
     private void SetupSelectedPartUI(int buttonIndex) {
-        ShipPartData part = ShipPartsManifest.allParts[partScrollIndex + buttonIndex];
-        SP_title.text = part.partName;
-        SP_mark.text = "MK " + part.mark;
+        selectedPart = ShipPartsManifest.allParts[partScrollIndex + buttonIndex];
+        SP_title.text = selectedPart.partName;
+        SP_mark.text = "MK " + selectedPart.mark;
         //SP_quantity.text = "x0"; // TODO!
-        //SP_icon = ; // TODO!
-        SP_buy.GetComponentInChildren<TMP_Text>().text = "Buy (" + part.cost + "R)";
+        SP_icon.sprite = shipFactory.GetSpriteForPart(selectedPart); // TODO!
+        SP_buy.GetComponentInChildren<TMP_Text>().text = "Buy (" + selectedPart.cost + "R)";
     }
 
     private void TrackPart() {
@@ -134,7 +137,7 @@ public class ShipBuilderManager : MonoBehaviour
     }
 
     public void OnPartPlaceButton() {
-        inFlightPart = Instantiate(debugShipPartPrefab, Utils.GetMouseWorldPos(), Quaternion.identity);
+        inFlightPart = shipFactory.CreateShipPart(selectedPart, Utils.GetMouseWorldPos(), Quaternion.identity).transform;
         gridSlotSelectedObj.gameObject.SetActive(false);
     }
 }
