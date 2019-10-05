@@ -49,9 +49,9 @@ public class ShipController : MonoBehaviour
                     backThrusters.Add(part);
                 } else { 
                     if (Vector3.Cross(part.transform.up, (Vector2)part.transform.position - rb.worldCenterOfMass).z > 0) {
-                        positiveTorqueThrusters.Add(part);
-                    } else {
                         negativeTorqueThrusters.Add(part);
+                    } else {
+                        positiveTorqueThrusters.Add(part);
                     }
                 }
             } else if (part.data.type == ShipPartData.Type.MachineGun) {

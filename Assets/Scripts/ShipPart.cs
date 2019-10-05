@@ -58,6 +58,10 @@ public class ShipPart : MonoBehaviour
 
     public void Attack() {
         CheckType(ShipPartData.Type.MachineGun);
+        if (timer == 0) {
+            // Make the first shot random so that every weapon is not in perfect sync
+            timer = Time.timeSinceLevelLoad + Random.Range(0, data.GetWeaponCooldown());
+        }
         if (Time.timeSinceLevelLoad > timer) {
             timer = Time.timeSinceLevelLoad + data.GetWeaponCooldown();
             GameObject projectile = Instantiate(cachedChildPrefab, transform.position, transform.rotation);

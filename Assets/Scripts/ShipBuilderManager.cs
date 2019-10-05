@@ -8,6 +8,7 @@ using TMPro;
 public class ShipBuilderManager : MonoBehaviour
 {
     // Set in editor
+    public Transform builderUI;
     public Transform gridSlotBackgroundPrefab;
     public Transform gridSlotSelectedObj; // highlights the currently selected slot
     public RectTransform partSelectPanel;
@@ -28,6 +29,7 @@ public class ShipBuilderManager : MonoBehaviour
     private ShipPart[,] gridParts;
     private ShipPartData selectedPart; // Selected on the right, not the left!
     private ShipFactory shipFactory;
+    private List<GameObject> backgroundSprites = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start() {
@@ -87,7 +89,8 @@ public class ShipBuilderManager : MonoBehaviour
     private void SetupBuilderBackground() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                Instantiate(gridSlotBackgroundPrefab, new Vector3(x, y, 0), Quaternion.identity);
+                GameObject slotBackground = Instantiate(gridSlotBackgroundPrefab, new Vector3(x, y, 0), Quaternion.identity).gameObject;
+                backgroundSprites.Add(slotBackground);
             }
         }
 
@@ -127,7 +130,7 @@ public class ShipBuilderManager : MonoBehaviour
     private void RemovePartFromGrid(int x, int y) {
         if (gridParts[x, y] != null) {
             // TODO: Put back in inventory
-            Destroy(gridParts[x, y]);
+            Destroy(gridParts[x, y].gameObject);
         }
     }
 
@@ -169,6 +172,11 @@ public class ShipBuilderManager : MonoBehaviour
 
     public void OnPlayButton() {
         shipFactory.CreateShip(gridParts);
+        builderUI.gameObject.SetActive(false);
+        foreach (GameObject go in backgroundSprites) {
+            Destroy(go);
+        }
+        gridSlotSelectedObj.gameObject.SetActive(false);
     }
 }
  
