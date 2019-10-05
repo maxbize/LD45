@@ -9,6 +9,7 @@ public class ShipBuilderManager : MonoBehaviour
 {
     // Set in editor
     public Transform gridSlotBackgroundPrefab;
+    public Transform gridSlotSelectedObj; // highlights the currently selected slot
     public Transform debugShipPartPrefab;
     public RectTransform partSelectPanel;
     public RectTransform[] partSelectButtons;
@@ -28,6 +29,7 @@ public class ShipBuilderManager : MonoBehaviour
     void Start() {
         width = 3;
         height = 3; // TODO: Get these from somewhere
+        gridSlotSelectedObj.gameObject.SetActive(false);
         SetupPartSelectionUI();
         SetupSelectedPartUI(0);
         SetupBuilderBackground();
@@ -65,7 +67,7 @@ public class ShipBuilderManager : MonoBehaviour
     private void TrackPart() {
         Vector3 mousePos = Utils.GetMouseWorldPos();
         if (Input.mousePosition.x < 0 || Input.mousePosition.x > Screen.width * 0.75f || Input.mousePosition.y < 0 || Input.mousePosition.y > Screen.height) {
-            mousePos = new Vector3(width + 1, height / 2);
+            mousePos = new Vector3(width + 0.5f, height / 2);
         }
         inFlightPart.transform.position = mousePos;
     }
@@ -100,6 +102,8 @@ public class ShipBuilderManager : MonoBehaviour
             inFlightPart.transform.position = new Vector2(x, y);
             inFlightPart = null;
         }
+        gridSlotSelectedObj.gameObject.SetActive(true);
+        gridSlotSelectedObj.transform.position = new Vector2(x, y);
     }
 
     public void OnPartScrollButton(bool upArrow) {
@@ -120,6 +124,7 @@ public class ShipBuilderManager : MonoBehaviour
 
     public void OnPartPlaceButton() {
         inFlightPart = Instantiate(debugShipPartPrefab, Utils.GetMouseWorldPos(), Quaternion.identity);
+        gridSlotSelectedObj.gameObject.SetActive(false);
     }
 }
  

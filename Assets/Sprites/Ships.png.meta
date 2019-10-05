@@ -11,6 +11,9 @@ TextureImporter:
   - first:
       213: -3694011042877506897
     second: Ships_2
+  - first:
+      213: 499465489112947978
+    second: Ships_3
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -121,7 +124,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 38f8fbf76e3b51b48b95f40ece7037bc
+      spriteID: cee6ca3c079b5a84db2b1b08202ced85
       internalID: -4925448337817528618
       vertices: []
       indices: 
@@ -142,7 +145,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fa3affdb082b7f14cb9e801888e9aafd
+      spriteID: 11aabb3eeb90535408d62c3213267a8c
       internalID: -3955315786042260600
       vertices: []
       indices: 
@@ -163,8 +166,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74eadf6bfcbe73f45ab4688dd039bcde
+      spriteID: 86ded5de0fe3dba49bce9e4ce2fd81f3
       internalID: -3694011042877506897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ships_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 240
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7406a6fab57ee3a48bf83fc004cf942e
+      internalID: 499465489112947978
       vertices: []
       indices: 
       edges: []
