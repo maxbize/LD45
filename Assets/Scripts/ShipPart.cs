@@ -41,7 +41,7 @@ public class ShipPart : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision) {
         ShipPart otherPart = collision.collider.GetComponent<ShipPart>();
-        int damage = (int)collision.relativeVelocity.magnitude * 10;
+        int damage = (int)collision.relativeVelocity.magnitude * 50;
         TakeDamage(damage);
     }
 }
