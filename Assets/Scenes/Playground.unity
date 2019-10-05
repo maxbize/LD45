@@ -1183,7 +1183,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.147, g: 0.147, b: 0.147, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1901,6 +1901,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57fcb7b1fab7fd43a277db1d4f19127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridSlotBackgroundPrefab: {fileID: 3360537401254268683, guid: d919f7622e5ca7245b4b1c8add34ebd3,
+    type: 3}
   debugShipPartPrefab: {fileID: 48833394188314167, guid: 6240d73a91617ad4ab298d9476e42736,
     type: 3}
   partSelectPanel: {fileID: 0}

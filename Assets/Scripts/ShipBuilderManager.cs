@@ -8,6 +8,7 @@ using TMPro;
 public class ShipBuilderManager : MonoBehaviour
 {
     // Set in editor
+    public Transform gridSlotBackgroundPrefab;
     public Transform debugShipPartPrefab;
     public RectTransform partSelectPanel;
     public RectTransform[] partSelectButtons;
@@ -26,6 +27,7 @@ public class ShipBuilderManager : MonoBehaviour
     void Start() {
         SetupPartSelectionUI();
         SetupSelectedPartUI(0);
+        SetupBuilderBackground(3, 3);
     }
 
     // Update is called once per frame
@@ -45,7 +47,28 @@ public class ShipBuilderManager : MonoBehaviour
 
     // Top screen
     private void SetupSelectedPartUI(int buttonIndex) {
+        ShipPartData part = ShipPartsManifest.allParts[partScrollIndex + buttonIndex];
+        SP_title.text = part.partName;
+        SP_mark.text = "MK " + part.mark;
+        SP_quantity.text = "x0"; // TODO!
+        //SP_icon = ; // TODO!
+        SP_buy.GetComponentInChildren<TMP_Text>().text = "Buy (" + part.cost + "R)";
+    }
 
+    private void SetupBuilderBackground(int width, int height) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Instantiate(gridSlotBackgroundPrefab, new Vector3(x, y, 0), Quaternion.identity);
+            }
+        }
+
+        // Center the camera
+        Camera cam = Camera.main;
+        Vector3 camPos = cam.transform.position;
+        // 0.5 = pivot of square, 2.2 = offset for UI (HACK)
+        camPos.x = width / 2f - 0.5f + 2.2f;
+        camPos.y = height / 2f - 0.5f;
+        cam.transform.position = camPos;
     }
 
     private void HandleClick() {
@@ -62,25 +85,12 @@ public class ShipBuilderManager : MonoBehaviour
         SetupPartSelectionUI();
     }
 
-    /*
-     *     public TMP_Text SP_title;
-    public TMP_Text SP_mark;
-    public TMP_Text SP_quantity;
-    public Image SP_icon;
-    public Button SP_buy;
-*/
     public void OnPartSelectButton(int buttonIndex) {
-        ShipPartData part = ShipPartsManifest.allParts[partScrollIndex + buttonIndex];
-        SP_title.text = part.partName;
-        SP_mark.text = "MK " + part.mark;
-        SP_quantity.text = "x0"; // TODO!
-        //SP_icon = ; // TODO!
-        SP_buy.GetComponentInChildren<TMP_Text>().text = "Buy (" + part.cost + "R)";
+        SetupSelectedPartUI(buttonIndex);
     }
 
     public void OnPartBuy() {
 
     }
-
 }
  
