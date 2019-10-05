@@ -25,8 +25,8 @@ public class ShipBuilderManager : MonoBehaviour
     private int partScrollIndex;
     private int width;
     private int height;
-    private Transform inFlightPart; // The part the user has selected to place but has not yet placed
-    private GameObject[,] gridParts;
+    private ShipPart inFlightPart; // The part the user has selected to place but has not yet placed
+    private ShipPart[,] gridParts;
     private ShipPartData selectedPart; // Selected on the right, not the left!
     private ShipFactory shipFactory;
 
@@ -35,7 +35,7 @@ public class ShipBuilderManager : MonoBehaviour
         shipFactory = FindObjectOfType<ShipFactory>();
         width = 3;
         height = 3; // TODO: Get these from somewhere
-        gridParts = new GameObject[width, height];
+        gridParts = new ShipPart[width, height];
         DisableSelectedSlotUI();
         SetupPartSelectionUI();
         SetupSelectedPartUI(0);
@@ -113,7 +113,7 @@ public class ShipBuilderManager : MonoBehaviour
 
         } else {
             RemovePartFromGrid(x, y);
-            gridParts[x, y] = inFlightPart.gameObject;
+            gridParts[x, y] = inFlightPart;
             inFlightPart.transform.position = new Vector2(x, y);
             inFlightPart = null;
         }
@@ -149,7 +149,7 @@ public class ShipBuilderManager : MonoBehaviour
     }
 
     public void OnPartPlaceButton() {
-        inFlightPart = shipFactory.CreateShipPart(selectedPart, Utils.GetMouseWorldPos(), Quaternion.identity).transform;
+        inFlightPart = shipFactory.CreateShipPart(selectedPart, Utils.GetMouseWorldPos(), Quaternion.identity);
         DisableSelectedSlotUI();
     }
 
@@ -166,6 +166,10 @@ public class ShipBuilderManager : MonoBehaviour
         if (gridParts[x, y] != null) {
             gridParts[x, y].transform.rotation = Quaternion.Euler(0, 0, gridParts[x, y].transform.rotation.eulerAngles.z + 90);
         }
+    }
+
+    public void OnPlayButton() {
+        shipFactory.CreateShip(gridParts);
     }
 }
  
