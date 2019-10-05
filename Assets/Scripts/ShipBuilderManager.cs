@@ -150,6 +150,9 @@ public class ShipBuilderManager : MonoBehaviour
     }
 
     public void OnPartPlaceButton() {
+        if (inFlightPart != null) {
+            Destroy(inFlightPart.gameObject);
+        }
         inFlightPart = shipFactory.CreateShipPart(selectedPart, Utils.GetMouseWorldPos(), Quaternion.identity);
         DisableSelectedSlotUI();
     }
@@ -170,6 +173,9 @@ public class ShipBuilderManager : MonoBehaviour
     }
 
     public void OnPlayButton() {
+        if (inFlightPart != null) {
+            Destroy(inFlightPart.gameObject);
+        }
         shipFactory.CreateShip(gridParts);
         builderUI.gameObject.SetActive(false);
         foreach (GameObject go in backgroundSprites) {
