@@ -13,6 +13,8 @@ public class ShipBuilderManager : MonoBehaviour
     public Transform debugShipPartPrefab;
     public RectTransform partSelectPanel;
     public RectTransform[] partSelectButtons;
+    public Button rotatePartButton;
+    public Button removePartButton;
     // Selected Part
     public TMP_Text SP_title;
     public TMP_Text SP_mark;
@@ -34,7 +36,7 @@ public class ShipBuilderManager : MonoBehaviour
         width = 3;
         height = 3; // TODO: Get these from somewhere
         gridParts = new GameObject[width, height];
-        gridSlotSelectedObj.gameObject.SetActive(false);
+        DisableSelectedSlotUI();
         SetupPartSelectionUI();
         SetupSelectedPartUI(0);
         SetupBuilderBackground();
@@ -49,6 +51,12 @@ public class ShipBuilderManager : MonoBehaviour
         if (inFlightPart != null) {
             TrackPart();
         }
+    }
+
+    private void DisableSelectedSlotUI() {
+        gridSlotSelectedObj.gameObject.SetActive(false);
+        rotatePartButton.interactable = false;
+        removePartButton.interactable = false;
     }
 
     // Bottom screen
@@ -110,6 +118,10 @@ public class ShipBuilderManager : MonoBehaviour
             inFlightPart = null;
         }
         gridSlotSelectedObj.gameObject.SetActive(true);
+        if (gridParts[x, y] != null) {
+            removePartButton.interactable = true;
+            rotatePartButton.interactable = true;
+        }
         gridSlotSelectedObj.transform.position = new Vector2(x, y);
     }
 
@@ -138,7 +150,22 @@ public class ShipBuilderManager : MonoBehaviour
 
     public void OnPartPlaceButton() {
         inFlightPart = shipFactory.CreateShipPart(selectedPart, Utils.GetMouseWorldPos(), Quaternion.identity).transform;
-        gridSlotSelectedObj.gameObject.SetActive(false);
+        DisableSelectedSlotUI();
+    }
+
+    public void OnPartRemoveButton() {
+        int x = Mathf.RoundToInt(gridSlotSelectedObj.position.x);
+        int y = Mathf.RoundToInt(gridSlotSelectedObj.position.y);
+        RemovePartFromGrid(x, y);
+        DisableSelectedSlotUI();
+    }
+
+    public void OnPartRotateButton() {
+        int x = Mathf.RoundToInt(gridSlotSelectedObj.position.x);
+        int y = Mathf.RoundToInt(gridSlotSelectedObj.position.y);
+        if (gridParts[x, y] != null) {
+            gridParts[x, y].transform.rotation = Quaternion.Euler(0, 0, gridParts[x, y].transform.rotation.eulerAngles.z + 90);
+        }
     }
 }
  
