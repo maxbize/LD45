@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ShipPartData
 {
+    // Required params
     public readonly Type type;
     public readonly string partName;
     public readonly string spriteName;
@@ -11,7 +12,10 @@ public class ShipPartData
     public readonly int cost;
     public readonly int mark; // mk1, mk2, etc
     public readonly int mass;
+
+    // Optional params
     public readonly int intParam1; // Thrust force, 
+    public readonly string childPrefabName;
 
     public enum Type
     {
@@ -19,7 +23,8 @@ public class ShipPartData
         Thruster
     }
 
-    public ShipPartData(Type type, string partName, string spriteName, int maxHealth, int cost, int mark, int mass, int intParam1) {
+    public ShipPartData(Type type, string partName, string spriteName, int maxHealth, int cost, int mark, int mass,
+            int intParam1 = 0, string childPrefabName = null) {
         this.partName = partName;
         this.spriteName = spriteName;
         this.maxHealth = maxHealth;
@@ -28,6 +33,7 @@ public class ShipPartData
         this.mass = mass;
         this.type = type;
         this.intParam1 = intParam1;
+        this.childPrefabName = childPrefabName;
     }
 
     public int GetThrustForce() {

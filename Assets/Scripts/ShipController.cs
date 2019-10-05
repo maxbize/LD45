@@ -9,10 +9,11 @@ public class ShipController : MonoBehaviour
 
 
     private ShipPart[,] parts;
-    private List<ShipPart> forwardThrusters;
-    private List<ShipPart> backThrusters;
-    private List<ShipPart> rightThrusters; // Thrusters used in right turn - can be on both sides
-    private List<ShipPart> leftThrusters; // Thrusters used in left turn - can be on both sides
+    private List<ShipPart> forwardThrusters = new List<ShipPart>();
+    private List<ShipPart> backThrusters = new List<ShipPart>();
+    private List<ShipPart> positiveTorqueThrusters = new List<ShipPart>(); // Thrusters used in right turn - can be on both sides
+    private List<ShipPart> negativeTorqueThrusters = new List<ShipPart>(); // Thrusters used in left turn - can be on both sides
+    private List<ShipPart> thrusters = new List<ShipPart>();
     private Rigidbody2D rb;
 
     // Start is called before the first frame update
@@ -27,6 +28,7 @@ public class ShipController : MonoBehaviour
 
     public void RegisterParts(ShipPart[,] parts) {
         this.parts = parts;
+        rb = GetComponent<Rigidbody2D>(); // Might get called before Start
 
         foreach (ShipPart part in parts) {
             if (part == null) {
@@ -37,21 +39,54 @@ public class ShipController : MonoBehaviour
 
             // Organize thrusters into categories
             if (part.data.type == ShipPartData.Type.Thruster) {
+                thrusters.Add(part);
                 float partZ = part.transform.rotation.eulerAngles.z;
-                float shipZ = transform.rotation.eulerAngles.z;
+                int dir = Mathf.RoundToInt(partZ / 90);
+                if (dir == 0) {
+                    forwardThrusters.Add(part);
+                } else if (dir == 2 || dir == -2) {
+                    backThrusters.Add(part);
+                } else { 
+                    if (Vector3.Cross(part.transform.up, (Vector2)part.transform.position - rb.worldCenterOfMass).z > 0) {
+                        positiveTorqueThrusters.Add(part);
+                    } else {
+                        negativeTorqueThrusters.Add(part);
+                    }
+                }
+
             }
+
+            // Set density. Every part has the same volume, so just use mass directly
+            part.GetComponent<Collider2D>().density = part.data.mass;
         }
     }
 
     // Each direction can be on simultaneously because they activate different thrusters
     public void Move(bool up, bool down, bool right, bool left) {
+        List<ShipPart> activeThrusters = new List<ShipPart>();
 
         if (up) {
-            foreach (ShipPart thruster in parts) {
-                if (thruster == null || !(thruster.data.type == ShipPartData.Type.Thruster)) {
-                    continue;
-                }
+            activeThrusters.AddRange(forwardThrusters);
+        }
+
+        if (down) {
+            activeThrusters.AddRange(backThrusters);
+        }
+
+        if (right) {
+            activeThrusters.AddRange(negativeTorqueThrusters);
+        }
+
+        if (left) {
+            activeThrusters.AddRange(positiveTorqueThrusters);
+        }
+
+        foreach (ShipPart thruster in thrusters) {
+            if (activeThrusters.Contains(thruster)) {
+                thruster.ActivateThruster();
                 rb.AddForceAtPosition(thruster.transform.up * thruster.data.GetThrustForce(), thruster.transform.position);
+            } else {
+                thruster.DisableThruster();
             }
         }
     }

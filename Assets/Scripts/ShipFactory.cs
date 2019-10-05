@@ -31,16 +31,25 @@ public class ShipFactory : MonoBehaviour
     }
 
     public GameObject CreateShip(ShipPart[,] parts) {
+        // Find the center to position the ship object
         Vector3 center = Vector3.zero;
         int numParts = 0;
         foreach (ShipPart part in parts) {
             if (part != null) {
                 center += part.transform.position;
                 numParts++;
+                
+                // Load any extra prefabs the part requires
+                if (part.data.childPrefabName != null) {
+                    GameObject prefab = (GameObject)Resources.Load("Prefabs/" + part.data.childPrefabName);
+                    Instantiate(prefab, part.transform);
+                }
             }
         }
         center /= numParts;
 
+
+        // Make the ship object itself
         GameObject ship = Instantiate(playerShipPrefab, center, Quaternion.identity);
         ship.GetComponent<ShipController>().RegisterParts(parts);
         return ship;
