@@ -8,18 +8,21 @@ public class ShipController : MonoBehaviour
     // Set in editor
 
 
-    private ShipPart[,] parts;
-    private List<ShipPart> forwardThrusters = new List<ShipPart>();
-    private List<ShipPart> backThrusters = new List<ShipPart>();
-    private List<ShipPart> positiveTorqueThrusters = new List<ShipPart>(); // Thrusters used in right turn - can be on both sides
-    private List<ShipPart> negativeTorqueThrusters = new List<ShipPart>(); // Thrusters used in left turn - can be on both sides
-    private List<ShipPart> thrusters = new List<ShipPart>();
-    private List<ShipPart> weapons = new List<ShipPart>();
+    private List<ShipPart> parts;
+    private List<Thrusters> forwardThrusters = new List<Thrusters>();
+    private List<Thrusters> backThrusters = new List<Thrusters>();
+    private List<Thrusters> positiveTorqueThrusters = new List<Thrusters>(); // Thrusters used in right turn - can be on both sides
+    private List<Thrusters> negativeTorqueThrusters = new List<Thrusters>(); // Thrusters used in left turn - can be on both sides
+    private List<Thrusters> thrusters = new List<Thrusters>();
+    private List<ProjectileWeapon> weapons = new List<ProjectileWeapon>();
     private Rigidbody2D rb;
 
     // Start is called before the first frame update
     void Start() {
         rb = GetComponent<Rigidbody2D>();
+        if (parts == null) {
+            RegisterParts(new List<ShipPart>(GetComponentsInChildren<ShipPart>()));
+        }
     }
 
     // Update is called once per frame
@@ -28,6 +31,14 @@ public class ShipController : MonoBehaviour
     }
 
     public void RegisterParts(ShipPart[,] parts) {
+        List<ShipPart> asList = new List<ShipPart>();
+        foreach (ShipPart part in parts) {
+            asList.Add(part);
+        }
+        RegisterParts(asList);
+    }
+
+    public void RegisterParts(List<ShipPart> parts) {
         this.parts = parts;
         rb = GetComponent<Rigidbody2D>(); // Might get called before Start
 
@@ -39,27 +50,28 @@ public class ShipController : MonoBehaviour
             part.transform.parent = transform;
 
             // Organize thrusters into categories
-            if (part.data.type == ShipPartData.Type.Thruster) {
-                thrusters.Add(part);
+            Thrusters partThrusters = part.GetComponent<Thrusters>();
+            if (partThrusters != null) {
+                thrusters.Add(partThrusters);
                 float partZ = part.transform.rotation.eulerAngles.z;
                 int dir = Mathf.RoundToInt(partZ / 90);
                 if (dir == 0) {
-                    forwardThrusters.Add(part);
+                    forwardThrusters.Add(partThrusters);
                 } else if (dir == 2 || dir == -2) {
-                    backThrusters.Add(part);
+                    backThrusters.Add(partThrusters);
                 } else { 
                     if (Vector3.Cross(part.transform.up, (Vector2)part.transform.position - rb.worldCenterOfMass).z > 0) {
-                        negativeTorqueThrusters.Add(part);
+                        negativeTorqueThrusters.Add(partThrusters);
                     } else {
-                        positiveTorqueThrusters.Add(part);
+                        positiveTorqueThrusters.Add(partThrusters);
                     }
                 }
-            } else if (part.data.type == ShipPartData.Type.MachineGun) {
-                weapons.Add(part);
+            } else if (part.GetComponent<ProjectileWeapon>() != null) {
+                weapons.Add(part.GetComponent<ProjectileWeapon>());
             }
 
             // Set density. Every part has the same volume, so just use mass directly
-            part.GetComponent<Collider2D>().density = part.data.mass;
+            part.GetComponent<Collider2D>().density = part.mass;
 
             // Tag to the same layer as the parent
             part.gameObject.layer = gameObject.layer;
@@ -68,7 +80,7 @@ public class ShipController : MonoBehaviour
 
     // Each direction can be on simultaneously because they activate different thrusters
     public void Move(bool up, bool down, bool right, bool left) {
-        List<ShipPart> activeThrusters = new List<ShipPart>();
+        List<Thrusters> activeThrusters = new List<Thrusters>();
 
         if (up) {
             activeThrusters.AddRange(forwardThrusters);
@@ -86,10 +98,10 @@ public class ShipController : MonoBehaviour
             activeThrusters.AddRange(positiveTorqueThrusters);
         }
 
-        foreach (ShipPart thruster in thrusters) {
+        foreach (Thrusters thruster in thrusters) {
             if (activeThrusters.Contains(thruster)) {
                 thruster.ActivateThruster();
-                rb.AddForceAtPosition(thruster.transform.up * thruster.data.GetThrustForce(), thruster.transform.position);
+                rb.AddForceAtPosition(thruster.transform.up * thruster.thrustForce, thruster.transform.position);
             } else {
                 thruster.DisableThruster();
             }
@@ -97,7 +109,7 @@ public class ShipController : MonoBehaviour
     }
 
     public void Attack() {
-        foreach (ShipPart weapon in weapons) {
+        foreach (ProjectileWeapon weapon in weapons) {
             weapon.Attack();
         }
     }

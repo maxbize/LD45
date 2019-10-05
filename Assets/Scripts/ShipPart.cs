@@ -6,12 +6,16 @@ using UnityEngine;
 public class ShipPart : MonoBehaviour
 {
     // Set in editor
-
-    public ShipPartData data; // HACK! Set from factory. GameObject, so no constructor :(
+    public string partName;
+    public int maxHealth;
+    public int mark; // mk1, mk2, etc
+    public int mass;
 
     private ParticleSystem childParticles;
     private float timer;
     private GameObject cachedChildPrefab;
+    private int health;
+    private ShipController controller;
 
     // Start is called before the first frame update
     void Start() {
@@ -24,48 +28,15 @@ public class ShipPart : MonoBehaviour
     }
 
     public void Initialize() {
-        if (data.type == ShipPartData.Type.Thruster) {
-            GameObject prefab = (GameObject)Resources.Load("Prefabs/" + data.GetExhaustPrefab());
-            Instantiate(prefab, transform);
-        } else if (data.type == ShipPartData.Type.MachineGun) {
-            cachedChildPrefab = (GameObject)Resources.Load("Prefabs/" + data.GetProjectilePrefab());
-        }
+        health = maxHealth;
+        controller = GetComponentInParent<ShipController>();
     }
 
-    private void CheckType(ShipPartData.Type type) {
-        if (data.type != type) {
-            Debug.LogWarningFormat("Requested operation on type {0} but part is type {1}", type, data.type);
-        }
-    }
-
-    public void ActivateThruster() {
-        CheckType(ShipPartData.Type.Thruster);
-        SetThrusters(true);
-    }
-
-    public void DisableThruster() {
-        CheckType(ShipPartData.Type.Thruster);
-        SetThrusters(false);
-    }
-
-    private void SetThrusters(bool enabled) {
-        if (childParticles == null) {
-            childParticles = GetComponentInChildren<ParticleSystem>();
-        }
-        ParticleSystem.EmissionModule emission = childParticles.emission;
-        emission.enabled = enabled;
-    }
-
-    public void Attack() {
-        CheckType(ShipPartData.Type.MachineGun);
-        if (timer == 0) {
-            // Make the first shot random so that every weapon is not in perfect sync
-            timer = Time.timeSinceLevelLoad + Random.Range(0, data.GetWeaponCooldown());
-        }
-        if (Time.timeSinceLevelLoad > timer) {
-            timer = Time.timeSinceLevelLoad + data.GetWeaponCooldown();
-            GameObject projectile = Instantiate(cachedChildPrefab, transform.position, transform.rotation);
-            projectile.layer = gameObject.layer;
+    public void TakeDamage(int damage) {
+        health -= damage;
+        Debug.LogFormat("{0} took {1} damage. {2} health left", gameObject.name, damage, health);
+        if (health <= 0) {
+            Destroy(gameObject);
         }
     }
 }

@@ -27,7 +27,7 @@ public class ShipBuilderManager : MonoBehaviour
     private int height;
     private ShipPart inFlightPart; // The part the user has selected to place but has not yet placed
     private ShipPart[,] gridParts;
-    private ShipPartData selectedPart; // Selected on the right, not the left!
+    private ShipPart selectedPart; // Selected on the right, not the left!
     private ShipFactory shipFactory;
     private List<GameObject> backgroundSprites = new List<GameObject>();
 
@@ -45,7 +45,7 @@ public class ShipBuilderManager : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && builderUI.gameObject.activeSelf) {
             HandleClick();
         }
 
@@ -63,19 +63,18 @@ public class ShipBuilderManager : MonoBehaviour
     // Bottom screen
     private void SetupPartSelectionUI() {
         for (int i = 0; i < partSelectButtons.Length; i++) {
-            ShipPartData part = ShipPartsManifest.allParts[partScrollIndex + i];
+            ShipPart part = shipFactory.partPrefabs[partScrollIndex + i].GetComponent<ShipPart>();
             partSelectButtons[i].GetComponentInChildren<TMP_Text>().text = part.partName + " MK" + part.mark;
         }
     }
 
     // Top screen
     private void SetupSelectedPartUI(int buttonIndex) {
-        selectedPart = ShipPartsManifest.allParts[partScrollIndex + buttonIndex];
+        selectedPart = shipFactory.partPrefabs[partScrollIndex + buttonIndex].GetComponent<ShipPart>();
         SP_title.text = selectedPart.partName;
         SP_mark.text = "MK " + selectedPart.mark;
         //SP_quantity.text = "x0"; // TODO!
-        SP_icon.sprite = shipFactory.GetSpriteForPart(selectedPart); // TODO!
-        SP_buy.GetComponentInChildren<TMP_Text>().text = "Buy (" + selectedPart.cost + "R)";
+        SP_icon.sprite = selectedPart.GetComponent<SpriteRenderer>().sprite;
     }
 
     private void TrackPart() {
@@ -135,7 +134,7 @@ public class ShipBuilderManager : MonoBehaviour
     }
 
     public void OnPartScrollButton(bool upArrow) {
-        int numParts = ShipPartsManifest.allParts.Count;
+        int numParts = shipFactory.partPrefabs.Length;
         int numSlots = partSelectButtons.Length;
         int newIndex = partScrollIndex + (upArrow ? -1 : 1);
         partScrollIndex = Mathf.Clamp(newIndex, 0, numParts - numSlots);

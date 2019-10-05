@@ -94,6 +94,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98dd3083e3ec244ea078746ccb99db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
+  partName: 
+  spriteName: 
+  maxHealth: 100
+  cost: 0
+  mark: 1
+  mass: 100
 --- !u!61 &834249718124705476
 BoxCollider2D:
   m_ObjectHideFlags: 0

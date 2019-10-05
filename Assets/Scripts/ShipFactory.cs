@@ -9,6 +9,7 @@ public class ShipFactory : MonoBehaviour
     // Set in editor
     public GameObject shipPartPrefab;
     public GameObject playerShipPrefab;
+    public GameObject[] partPrefabs;
 
     private Dictionary<string, Sprite> shipSprites;
 
@@ -22,11 +23,8 @@ public class ShipFactory : MonoBehaviour
 
     }
 
-    public ShipPart CreateShipPart(ShipPartData data, Vector3 pos, Quaternion rot) {
-        GameObject partObj = Instantiate(shipPartPrefab, pos, rot);
-        partObj.GetComponent<ShipPart>().data = data;
-        partObj.GetComponent<SpriteRenderer>().sprite = GetSpriteForPart(data);
-        Debug.Log(GetSpriteForPart(data));
+    public ShipPart CreateShipPart(ShipPart part, Vector3 pos, Quaternion rot) {
+        GameObject partObj = Instantiate(part.gameObject, pos, rot);
         return partObj.GetComponent<ShipPart>();
     }
 
