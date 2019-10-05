@@ -12,8 +12,6 @@ public class ShipBuilderManager : MonoBehaviour
     public Transform debugShipPartPrefab;
     public RectTransform partSelectPanel;
     public RectTransform[] partSelectButtons;
-    public int maxWidth;
-    public int maxHeight;
     // Selected Part
     public TMP_Text SP_title;
     public TMP_Text SP_mark;
@@ -22,18 +20,27 @@ public class ShipBuilderManager : MonoBehaviour
     public Button SP_buy;
 
     private int partScrollIndex;
+    private int width;
+    private int height;
+    private Transform inFlightPart; // The part the user has selected to place but has not yet placed
 
     // Start is called before the first frame update
     void Start() {
+        width = 3;
+        height = 3; // TODO: Get these from somewhere
         SetupPartSelectionUI();
         SetupSelectedPartUI(0);
-        SetupBuilderBackground(3, 3);
+        SetupBuilderBackground();
     }
 
     // Update is called once per frame
     void Update() {
         if (Input.GetMouseButtonDown(0)) {
-            //HandleClick();
+            HandleClick();
+        }
+
+        if (inFlightPart != null) {
+            TrackPart();
         }
     }
 
@@ -50,12 +57,20 @@ public class ShipBuilderManager : MonoBehaviour
         ShipPartData part = ShipPartsManifest.allParts[partScrollIndex + buttonIndex];
         SP_title.text = part.partName;
         SP_mark.text = "MK " + part.mark;
-        SP_quantity.text = "x0"; // TODO!
+        //SP_quantity.text = "x0"; // TODO!
         //SP_icon = ; // TODO!
         SP_buy.GetComponentInChildren<TMP_Text>().text = "Buy (" + part.cost + "R)";
     }
 
-    private void SetupBuilderBackground(int width, int height) {
+    private void TrackPart() {
+        Vector3 mousePos = Utils.GetMouseWorldPos();
+        if (Input.mousePosition.x < 0 || Input.mousePosition.x > Screen.width * 0.75f || Input.mousePosition.y < 0 || Input.mousePosition.y > Screen.height) {
+            mousePos = new Vector3(width + 1, height / 2);
+        }
+        inFlightPart.transform.position = mousePos;
+    }
+
+    private void SetupBuilderBackground() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Instantiate(gridSlotBackgroundPrefab, new Vector3(x, y, 0), Quaternion.identity);
@@ -72,9 +87,19 @@ public class ShipBuilderManager : MonoBehaviour
     }
 
     private void HandleClick() {
-        Vector3 gridPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        gridPos = new Vector2(Mathf.Round(gridPos.x), Mathf.Round(gridPos.y));
-        Instantiate(debugShipPartPrefab, gridPos, Quaternion.identity);
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        int x = Mathf.RoundToInt(mousePos.x);
+        int y = Mathf.RoundToInt(mousePos.y);
+        if (x < 0 || x >= width || y < 0 || y >= height) {
+            return;
+        }
+
+        if (inFlightPart == null) {
+
+        } else {
+            inFlightPart.transform.position = new Vector2(x, y);
+            inFlightPart = null;
+        }
     }
 
     public void OnPartScrollButton(bool upArrow) {
@@ -89,8 +114,12 @@ public class ShipBuilderManager : MonoBehaviour
         SetupSelectedPartUI(buttonIndex);
     }
 
-    public void OnPartBuy() {
+    public void OnPartBuyButton() {
 
+    }
+
+    public void OnPartPlaceButton() {
+        inFlightPart = Instantiate(debugShipPartPrefab, Utils.GetMouseWorldPos(), Quaternion.identity);
     }
 }
  
