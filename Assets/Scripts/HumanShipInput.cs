@@ -6,6 +6,7 @@ using UnityEngine;
 public class HumanShipInput : MonoBehaviour
 {
 
+    [HideInInspector]
     public bool control;
 
     private ShipController shipController;

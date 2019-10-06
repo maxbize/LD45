@@ -159,6 +159,11 @@ public class ShipBuilderManager : MonoBehaviour
             return;
         }
 
+        // TEMP DEBUGGING - FAST BUILDING BUT NO CONSTRAINTS
+        if (inFlightPart == null) {
+            inFlightPart = Instantiate(selectedPart, Utils.GetMouseWorldPos(), Quaternion.identity);
+        }
+
         if (inFlightPart == null) {
 
         } else {

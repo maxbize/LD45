@@ -44,7 +44,7 @@ public class LevelsManager : MonoBehaviour
 
     private List<LevelData> levelData = new List<LevelData>() {
         //            w, h,   cockpits,      thrusters,     armors,        machine guns,  cannons,       shields,       missiles
-        //new LevelData(5, 5, new[] {1,0,0}, new[] {9,9,9}, new[] {0,0,0}, new[] {9,0,0}, new[] {9,0,0}, new[] {0,0,0}, new[] {0,0,0}),
+        new LevelData(3, 9, new[] {100,0,0}, new[] {100,0,0}, new[] {100,0,0}, new[] {100,0,0}, new[] {100,0,0}, new[] {100,0,0}, new[] {100,0,0}),
         new LevelData(1, 2, new[] {1,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
         new LevelData(1, 2, new[] {1,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
         new LevelData(2, 3, new[] {1,0,0}, new[] {2,0,0}, new[] {0,0,0}, new[] {2,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
