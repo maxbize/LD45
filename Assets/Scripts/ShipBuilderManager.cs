@@ -41,6 +41,7 @@ public class ShipBuilderManager : MonoBehaviour
 
     public void Initialize(LevelsManager.LevelData levelData) {
         this.levelData = levelData;
+        partScrollIndex = 0;
         gridParts = new ShipPart[levelData.shipWidth, levelData.shipHeight];
         nothingUI.gameObject.SetActive(false);
         CreateInventory();
@@ -68,6 +69,7 @@ public class ShipBuilderManager : MonoBehaviour
         AddPartsToInventory("Armors", levelData.armors);
         AddPartsToInventory("Machine Gun", levelData.machineGuns);
         AddPartsToInventory("Cannon", levelData.cannons);
+        Debug.LogFormat("Inventory: {0}", string.Join(", ", inventory.Select(kv => kv.Key + ":" + kv.Value)));
     }
 
     private void AddPartsToInventory(string partName, int[] partsArray) {

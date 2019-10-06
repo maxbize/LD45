@@ -47,6 +47,9 @@ public class ShipFactory : MonoBehaviour
     }
 
     public ShipPart GetPrefabByNameAndMark(string nameAndMark) {
+        if (!nameMarksToParts.ContainsKey(nameAndMark)) {
+            Debug.LogErrorFormat("Requested {0} but no prefab", nameAndMark);
+        }
         return nameMarksToParts[nameAndMark];
     }
 }

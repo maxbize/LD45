@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,9 @@ public class LevelsManager : MonoBehaviour
     // Set in editor
     public int currentLevel; // Here for debugging ;)
 
+    private GameManager gameManager;
     private ShipBuilderManager builder;
+    private List<GameObject> levelEnemies;
 
     public class LevelData
     {
@@ -44,11 +47,18 @@ public class LevelsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         builder = FindObjectOfType<ShipBuilderManager>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
     void Update() {
-
+        if (levelEnemies != null && levelEnemies.All(e => e == null)) {
+            currentLevel++;
+            StartNextLevelBuilder();
+            levelEnemies = null;
+            gameManager.shipBuilderPanel.SetActive(true); // HACK!
+            Destroy(FindObjectOfType<HumanShipInput>().gameObject);
+        }
     }
 
     public void StartNextLevelBuilder() {
@@ -56,10 +66,12 @@ public class LevelsManager : MonoBehaviour
     }
 
     public void StartNextLevelCombat() {
+        levelEnemies = new List<GameObject>();
         GameObject levelPrefab = transform.GetChild(currentLevel).gameObject;
         GameObject levelClone = Instantiate(levelPrefab);
         foreach (EnemyShip enemy in levelClone.GetComponentsInChildren<EnemyShip>()) {
             enemy.transform.parent = null;
+            levelEnemies.Add(enemy.gameObject);
         }
         Destroy(levelClone);
     }
