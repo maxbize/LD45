@@ -2068,7 +2068,7 @@ PrefabInstance:
     - target: {fileID: 7267306364963818123, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: serialized
-      value: Cockpit1,180
+      value: Shields1,180
       objectReference: {fileID: 0}
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
@@ -9439,6 +9439,7 @@ MonoBehaviour:
   - {fileID: 8659243495627311842, guid: 874cb3ea998f7c343b238ca789451de0, type: 3}
   - {fileID: 8659243495627311842, guid: 23584c9186afc8549826a9b625af5e34, type: 3}
   - {fileID: 8659243495627311842, guid: 32c19f27f49490642a75c3c857778a1b, type: 3}
+  - {fileID: 8659243495627311842, guid: 45d07f2b5d795694783b8377d31e5705, type: 3}
 --- !u!1 &1676948451
 GameObject:
   m_ObjectHideFlags: 0

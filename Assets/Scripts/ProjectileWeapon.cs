@@ -37,7 +37,7 @@ public class ProjectileWeapon : MonoBehaviour
                 if (target == null && levelsManager.levelEnemies != null) {
                     target = PickTarget();
                 }
-                projectile.GetComponent<Projectile>().TrackTarget(target);
+                projectile.GetComponent<Projectile>().TrackTarget(target, transform);
             }
             return true;
         }

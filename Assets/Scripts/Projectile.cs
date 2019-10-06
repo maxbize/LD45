@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour
     private bool alreadyDamaged = false; // Sometimes we hit two things. Only count one of them
     private Rigidbody2D rb;
     private Transform target;
+    private Transform originator;
 
     // Start is called before the first frame update
     void Start() {
@@ -30,8 +31,9 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void TrackTarget(Transform target) {
+    public void TrackTarget(Transform target, Transform spawner) {
         this.target = target;
+        this.originator = spawner;
     }
 
     private void OnTriggerEnter2D(Collider2D collider) {
@@ -46,12 +48,16 @@ public class Projectile : MonoBehaviour
                 rb.velocity = toProjectile * rb.velocity.magnitude;
                 transform.up = toProjectile;
                 gameObject.layer = LayerMask.NameToLayer(LayerMask.LayerToName(gameObject.layer) == "Friendly" ? "Hostile" : "Friendly");
+                if (target != null) {
+                    Transform tmp = target;
+                    target = originator;
+                    originator = tmp;
+                }
                 return;
             }
         }
         if (shipPart != null) {
             if (!alreadyDamaged && !hitShields) {
-                Debug.LogFormat("Dealing {0} damage to {1}", damage, shipPart);
                 shipPart.TakeDamage(damage);
                 alreadyDamaged = true;
                 Destroy(gameObject);
