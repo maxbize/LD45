@@ -23,11 +23,6 @@ public class ShipFactory : MonoBehaviour
 
     }
 
-    public ShipPart CreateShipPart(ShipPart part, Vector3 pos, Quaternion rot) {
-        GameObject partObj = Instantiate(part.gameObject, pos, rot);
-        return partObj.GetComponent<ShipPart>();
-    }
-
     public GameObject CreateShip(ShipPart[,] parts) {
         // Find the center to position the ship object
         Vector3 center = Vector3.zero;

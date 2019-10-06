@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Text;
 
 public class ShipBuilderManager : MonoBehaviour
 {
@@ -153,7 +154,7 @@ public class ShipBuilderManager : MonoBehaviour
         if (inFlightPart != null) {
             Destroy(inFlightPart.gameObject);
         }
-        inFlightPart = shipFactory.CreateShipPart(selectedPart, Utils.GetMouseWorldPos(), Quaternion.identity);
+        inFlightPart = Instantiate(selectedPart, Utils.GetMouseWorldPos(), Quaternion.identity);
         DisableSelectedSlotUI();
     }
 
@@ -173,6 +174,7 @@ public class ShipBuilderManager : MonoBehaviour
     }
 
     public void OnPlayButton() {
+        LogShipSerialized();
         if (inFlightPart != null) {
             Destroy(inFlightPart.gameObject);
         }
@@ -182,6 +184,24 @@ public class ShipBuilderManager : MonoBehaviour
             Destroy(go);
         }
         gridSlotSelectedObj.gameObject.SetActive(false);
+    }
+
+    private void LogShipSerialized() {
+        StringBuilder sb = new StringBuilder();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                ShipPart part = gridParts[x, y];
+                if (part == null) {
+                    sb.Append("null,0,");
+                } else {
+                    string partName = part.name.Substring(0, part.name.Length - "(Clone)".Length);
+                    sb.AppendFormat("{0},{1},", partName, Mathf.RoundToInt(part.transform.rotation.eulerAngles.z));
+                }
+            }
+            sb.Append("next,next,");
+        }
+        sb.Length--; // Trim off the last comma
+        Debug.Log(sb.ToString());
     }
 }
  
