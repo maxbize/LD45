@@ -27,7 +27,7 @@ public class CameraManager : MonoBehaviour
         cam = GetComponent<Camera>();
 
         // TODO: Get these from somewhere...
-        primaryTarget = FindObjectOfType<HumanShipInput>().gameObject;
+        //primaryTarget = FindObjectOfType<HumanShipInput>();
         secondaryTargets = new List<GameObject>();
         secondaryTargets.AddRange(FindObjectsOfType<EnemyShip>().Select(s => s.gameObject));
 
@@ -38,6 +38,10 @@ public class CameraManager : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        if (primaryTarget == null) {
+            return;
+        }
+
         // Define targets
         // Position
         Vector2 targetPos = primaryTarget.transform.position;
