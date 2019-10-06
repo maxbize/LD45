@@ -9,6 +9,7 @@ public class LevelsManager : MonoBehaviour
     // Set in editor
     public int currentLevel; // Here for debugging ;)
     public GameObject combatUI;
+    public GameObject levelVictoryUI;
 
     private GameManager gameManager;
     private ShipBuilderManager builder;
@@ -49,14 +50,16 @@ public class LevelsManager : MonoBehaviour
     void Start() {
         builder = FindObjectOfType<ShipBuilderManager>();
         gameManager = FindObjectOfType<GameManager>();
+        combatUI.SetActive(false);
+        levelVictoryUI.SetActive(false);
     }
 
     // Update is called once per frame
     void Update() {
-        if (levelEnemies != null && levelEnemies.All(e => e == null)) {
+        if (!levelVictoryUI.activeSelf && levelEnemies != null && levelEnemies.All(e => e == null)) {
             Debug.Log("Detected win on level " + currentLevel);
             currentLevel++;
-            StartNextLevelBuilder();
+            levelVictoryUI.SetActive(true);
         }
     }
 
@@ -74,6 +77,7 @@ public class LevelsManager : MonoBehaviour
             Destroy(player.gameObject);
         }
         combatUI.SetActive(false);
+        levelVictoryUI.SetActive(false);
         gameManager.shipBuilderPanel.SetActive(true); // HACK!
         builder.Initialize(levelData[currentLevel]);
     }
@@ -91,6 +95,12 @@ public class LevelsManager : MonoBehaviour
     }
 
     public void OnGiveUpButton() {
+        if (!levelVictoryUI.activeSelf) {
+            StartNextLevelBuilder();
+        }
+    }
+
+    public void OnContinueButton() {
         StartNextLevelBuilder();
     }
 }
