@@ -39,7 +39,6 @@ public class EnemyShip : MonoBehaviour
                 continue;
             }
             if (partName != "null") {
-                Debug.Log("Parsing: " + split[i + 1] + " for " + partName);
                 Quaternion partRotation = Quaternion.Euler(0, 0, int.Parse(split[i + 1]));
                 Instantiate(partMap[partName], transform.position + new Vector3(x, y, 0), partRotation, transform);
             }

@@ -119,12 +119,12 @@ public class ShipBuilderManager : MonoBehaviour
             inFlightPart.transform.position = new Vector2(x, y);
             inFlightPart = null;
         }
-        gridSlotSelectedObj.gameObject.SetActive(true);
         if (gridParts[x, y] != null) {
+            gridSlotSelectedObj.gameObject.SetActive(true);
             removePartButton.interactable = true;
             rotatePartButton.interactable = true;
+            gridSlotSelectedObj.transform.position = new Vector2(x, y);
         }
-        gridSlotSelectedObj.transform.position = new Vector2(x, y);
     }
 
     private void RemovePartFromGrid(int x, int y) {
