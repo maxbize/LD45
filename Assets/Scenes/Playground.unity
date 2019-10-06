@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01302b4d35a71b540993530cf1505148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 100
+  thrustForce: 500
   thrustParticles: {fileID: 1299173383}
 --- !u!198 &21798825
 ParticleSystem:
@@ -5191,7 +5191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01302b4d35a71b540993530cf1505148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 100
+  thrustForce: 500
   thrustParticles: {fileID: 1103191917}
 --- !u!198 &24904767
 ParticleSystem:
@@ -10849,7 +10849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01302b4d35a71b540993530cf1505148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 100
+  thrustForce: 500
   thrustParticles: {fileID: 1657760342}
 --- !u!198 &237290477
 ParticleSystem:
@@ -15715,7 +15715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01302b4d35a71b540993530cf1505148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 100
+  thrustForce: 500
   thrustParticles: {fileID: 996607767}
 --- !u!198 &237762902
 ParticleSystem:
@@ -31508,7 +31508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01302b4d35a71b540993530cf1505148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 100
+  thrustForce: 500
   thrustParticles: {fileID: 1865756383}
 --- !u!198 &713916469
 ParticleSystem:
@@ -36503,7 +36503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01302b4d35a71b540993530cf1505148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 100
+  thrustForce: 500
   thrustParticles: {fileID: 2032708791}
 --- !u!198 &740863141
 ParticleSystem:
@@ -46833,7 +46833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01302b4d35a71b540993530cf1505148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 100
+  thrustForce: 500
   thrustParticles: {fileID: 2139768021}
 --- !u!198 &867089008
 ParticleSystem:
@@ -56944,7 +56944,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01302b4d35a71b540993530cf1505148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 100
+  thrustForce: 500
   thrustParticles: {fileID: 659230765}
 --- !u!198 &1011982736
 ParticleSystem:
@@ -66778,7 +66778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01302b4d35a71b540993530cf1505148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 100
+  thrustForce: 500
   thrustParticles: {fileID: 1287899140}
 --- !u!198 &1222257517
 ParticleSystem:
@@ -81434,10 +81434,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1428869569}
+  - component: {fileID: 1428869570}
   - component: {fileID: 1428869568}
   - component: {fileID: 1428869567}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: Background Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81579,7 +81580,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -81589,7 +81590,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 60
+      scalar: 10
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -86178,6 +86179,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &1428869570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428869566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a6f0e457c242b9478fa1ef42a41dca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1493696374
 GameObject:
   m_ObjectHideFlags: 0
@@ -102092,7 +102105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01302b4d35a71b540993530cf1505148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 100
+  thrustForce: 500
   thrustParticles: {fileID: 745052826}
 --- !u!198 &2039857394
 ParticleSystem:
