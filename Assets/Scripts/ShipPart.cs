@@ -6,20 +6,22 @@ using UnityEngine;
 public class ShipPart : MonoBehaviour
 {
     // Set in editor
+    public GameObject destroyedParticles;
     public string partName;
     public int maxHealth;
     public int mark; // mk1, mk2, etc
     public int mass;
 
-    private ParticleSystem childParticles;
     private float timer;
     private GameObject cachedChildPrefab;
     private int health;
     private ShipController controller;
+    private ParticleSystem damagedPS;
 
     // Start is called before the first frame update
     void Start() {
         health = maxHealth;
+        damagedPS = GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -33,10 +35,12 @@ public class ShipPart : MonoBehaviour
 
     public void TakeDamage(int damage) {
         health -= damage;
-        Debug.LogFormat("{0} took {1} damage. {2} health left", gameObject.name, damage, health);
         if (health <= 0) {
+            Instantiate(destroyedParticles, transform.position, transform.rotation);
             Destroy(gameObject);
         }
+        ParticleSystem.EmissionModule emission = damagedPS.emission;
+        emission.rateOverTime = Mathf.Lerp(0, 50, 1f - (float)health / maxHealth);
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
