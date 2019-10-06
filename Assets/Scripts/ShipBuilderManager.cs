@@ -64,8 +64,8 @@ public class ShipBuilderManager : MonoBehaviour
         AddPartsToInventory("Cockpit", levelData.cockpits);
         AddPartsToInventory("Thrusters", levelData.thrusters);
         AddPartsToInventory("Armors", levelData.armors);
-        AddPartsToInventory("Machine Guns", levelData.machineGuns);
-        AddPartsToInventory("Cannons", levelData.cannons);
+        AddPartsToInventory("Machine Gun", levelData.machineGuns);
+        AddPartsToInventory("Cannon", levelData.cannons);
     }
 
     private void AddPartsToInventory(string partName, int[] partsArray) {
@@ -96,7 +96,7 @@ public class ShipBuilderManager : MonoBehaviour
                 partSelectButtons[i].gameObject.SetActive(false);
             } else {
                 partSelectButtons[i].gameObject.SetActive(true);
-                ShipPart part = shipFactory.GetPrefabByNameAndMark(invKeys[i]);
+                ShipPart part = shipFactory.GetPrefabByNameAndMark(invKeys[i + partScrollIndex]);
                 partSelectButtons[i].GetComponentInChildren<TMP_Text>().text = part.partName + " MK" + part.mark;
             }
         }
@@ -159,6 +159,7 @@ public class ShipBuilderManager : MonoBehaviour
             inventory[key]--;
             if (inventory[key] == 0) {
                 inventory.Remove(key);
+                partScrollIndex = Mathf.Min(partScrollIndex, inventory.Count - partSelectButtons.Length);
                 SetupPartSelectionUI();
                 SetupSelectedPartUI(0);
             } else {
@@ -196,7 +197,7 @@ public class ShipBuilderManager : MonoBehaviour
     }
 
     public void OnPartScrollButton(bool upArrow) {
-        int numParts = shipFactory.partPrefabs.Length;
+        int numParts = inventory.Count;
         int numSlots = partSelectButtons.Length;
         int newIndex = partScrollIndex + (upArrow ? -1 : 1);
         partScrollIndex = Mathf.Clamp(newIndex, 0, numParts - numSlots);
