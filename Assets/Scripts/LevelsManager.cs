@@ -8,6 +8,7 @@ public class LevelsManager : MonoBehaviour
 {
     // Set in editor
     public int currentLevel; // Here for debugging ;)
+    public GameObject combatUI;
 
     private GameManager gameManager;
     private ShipBuilderManager builder;
@@ -53,19 +54,32 @@ public class LevelsManager : MonoBehaviour
     // Update is called once per frame
     void Update() {
         if (levelEnemies != null && levelEnemies.All(e => e == null)) {
+            Debug.Log("Detected win on level " + currentLevel);
             currentLevel++;
             StartNextLevelBuilder();
-            levelEnemies = null;
-            gameManager.shipBuilderPanel.SetActive(true); // HACK!
-            Destroy(FindObjectOfType<HumanShipInput>().gameObject);
         }
     }
 
     public void StartNextLevelBuilder() {
+        if (levelEnemies != null) {
+            foreach (GameObject go in levelEnemies) {
+                if (go != null) {
+                    Destroy(go);
+                }
+            }
+        }
+        levelEnemies = null;
+        HumanShipInput player = FindObjectOfType<HumanShipInput>();
+        if (player != null) {
+            Destroy(player.gameObject);
+        }
+        combatUI.SetActive(false);
+        gameManager.shipBuilderPanel.SetActive(true); // HACK!
         builder.Initialize(levelData[currentLevel]);
     }
 
     public void StartNextLevelCombat() {
+        combatUI.SetActive(true);
         levelEnemies = new List<GameObject>();
         GameObject levelPrefab = transform.GetChild(currentLevel).gameObject;
         GameObject levelClone = Instantiate(levelPrefab);
@@ -74,5 +88,9 @@ public class LevelsManager : MonoBehaviour
             levelEnemies.Add(enemy.gameObject);
         }
         Destroy(levelClone);
+    }
+
+    public void OnGiveUpButton() {
+        StartNextLevelBuilder();
     }
 }
