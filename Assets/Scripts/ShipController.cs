@@ -11,6 +11,8 @@ public class ShipController : MonoBehaviour
     private List<ShipPart> parts;
     private List<Thrusters> forwardThrusters = new List<Thrusters>();
     private List<Thrusters> backThrusters = new List<Thrusters>();
+    private List<Thrusters> rightThrusters = new List<Thrusters>();
+    private List<Thrusters> leftThrusters = new List<Thrusters>();
     private List<Thrusters> positiveTorqueThrusters = new List<Thrusters>(); // Thrusters used in right turn - can be on both sides
     private List<Thrusters> negativeTorqueThrusters = new List<Thrusters>(); // Thrusters used in left turn - can be on both sides
     private List<Thrusters> thrusters = new List<Thrusters>();
@@ -67,6 +69,11 @@ public class ShipController : MonoBehaviour
                     } else {
                         positiveTorqueThrusters.Add(partThrusters);
                     }
+                    if (dir == 1 || dir == -3) {
+                        leftThrusters.Add(partThrusters);
+                    } else {
+                        rightThrusters.Add(partThrusters);
+                    }
                 }
             } else if (part.GetComponent<ProjectileWeapon>() != null) {
                 weapons.Add(part.GetComponent<ProjectileWeapon>());
@@ -81,23 +88,26 @@ public class ShipController : MonoBehaviour
     }
 
     // Each direction can be on simultaneously because they activate different thrusters
-    public void Move(bool up, bool down, bool right, bool left) {
+    public void Move(bool up, bool down, bool right, bool left, bool rotatePositive, bool rotateNegative) {
         List<Thrusters> activeThrusters = new List<Thrusters>();
 
         if (up) {
             activeThrusters.AddRange(forwardThrusters);
         }
-
         if (down) {
             activeThrusters.AddRange(backThrusters);
         }
-
         if (right) {
-            activeThrusters.AddRange(negativeTorqueThrusters);
+            activeThrusters.AddRange(rightThrusters);
         }
-
         if (left) {
+            activeThrusters.AddRange(leftThrusters);
+        }
+        if (rotatePositive) {
             activeThrusters.AddRange(positiveTorqueThrusters);
+        }
+        if (rotateNegative) {
+            activeThrusters.AddRange(negativeTorqueThrusters);
         }
 
         foreach (Thrusters thruster in thrusters) {
