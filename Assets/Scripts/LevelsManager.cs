@@ -33,9 +33,9 @@ public class LevelsManager : MonoBehaviour
 
     private List<LevelData> levelData = new List<LevelData>() {
         //            w, h,   cockpits,      thrusters,     armors,        machine guns,  cannons
-        new LevelData(1, 1, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
-        new LevelData(1, 2, new[] {1,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
-        new LevelData(2, 3, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
+        new LevelData(1, 1, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {1,0,0}, new[] {0,0,0}),
+        new LevelData(1, 2, new[] {1,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {1,0,0}, new[] {0,0,0}),
+        new LevelData(2, 3, new[] {1,0,0}, new[] {2,0,0}, new[] {0,0,0}, new[] {2,0,0}, new[] {0,0,0}),
         new LevelData(3, 3, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
         new LevelData(4, 4, new[] {0,1,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
         new LevelData(5, 5, new[] {0,1,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
@@ -51,7 +51,16 @@ public class LevelsManager : MonoBehaviour
 
     }
 
-    public void StartNextLevel() {
+    public void StartNextLevelBuilder() {
         builder.Initialize(levelData[currentLevel]);
+    }
+
+    public void StartNextLevelCombat() {
+        GameObject levelPrefab = transform.GetChild(currentLevel).gameObject;
+        GameObject levelClone = Instantiate(levelPrefab);
+        foreach (EnemyShip enemy in levelClone.GetComponentsInChildren<EnemyShip>()) {
+            enemy.transform.parent = null;
+        }
+        Destroy(levelClone);
     }
 }

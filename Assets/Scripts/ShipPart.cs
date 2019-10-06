@@ -37,6 +37,7 @@ public class ShipPart : MonoBehaviour
         health -= damage;
         if (health <= 0) {
             Instantiate(destroyedParticles, transform.position, transform.rotation);
+            controller.NotifyPartDestroyed(this);
             Destroy(gameObject);
         }
         ParticleSystem.EmissionModule emission = damagedPS.emission;

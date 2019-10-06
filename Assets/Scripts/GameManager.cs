@@ -29,6 +29,6 @@ public class GameManager : MonoBehaviour
     public void OnNewGameButton() {
         mainMenuPanel.SetActive(false);
         shipBuilderPanel.SetActive(true);
-        levelsManager.StartNextLevel();
+        levelsManager.StartNextLevelBuilder();
     }
 }

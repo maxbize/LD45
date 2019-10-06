@@ -10,9 +10,13 @@ public class EnemyShip : MonoBehaviour
     // Sorted top left to bottom right
     public string serialized;
 
+    private ShipController shipController;
+
     // Start is called before the first frame update
     void Start() {
+        shipController = GetComponent<ShipController>();
         BuildShip();
+        shipController.RegisterParts(GetComponentsInChildren<ShipPart>().ToList());
     }
 
     // Update is called once per frame
@@ -40,7 +44,8 @@ public class EnemyShip : MonoBehaviour
             }
             if (partName != "null") {
                 Quaternion partRotation = Quaternion.Euler(0, 0, int.Parse(split[i + 1]));
-                Instantiate(partMap[partName], transform.position + new Vector3(x, y, 0), partRotation, transform);
+                GameObject partObj = Instantiate(partMap[partName], transform.position + new Vector3(x, y, 0), partRotation, transform);
+                partObj.GetComponent<ShipPart>().Initialize();
             }
             x++;
         }

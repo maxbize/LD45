@@ -31,10 +31,12 @@ public class ShipBuilderManager : MonoBehaviour
     private List<GameObject> backgroundSprites = new List<GameObject>();
     private LevelsManager.LevelData levelData;
     private Dictionary<string, int> inventory; // [partName + mark -> num parts]. Not a dict to force an order
+    private LevelsManager levelManager;
 
     // Start is called before the first frame update
     void Start() {
         shipFactory = FindObjectOfType<ShipFactory>();
+        levelManager = FindObjectOfType<LevelsManager>();
     }
 
     public void Initialize(LevelsManager.LevelData levelData) {
@@ -160,6 +162,9 @@ public class ShipBuilderManager : MonoBehaviour
             if (inventory[key] == 0) {
                 inventory.Remove(key);
                 partScrollIndex = Mathf.Min(partScrollIndex, inventory.Count - partSelectButtons.Length);
+                if (partScrollIndex < 0) {
+                    partScrollIndex = 0;
+                }
                 SetupPartSelectionUI();
                 SetupSelectedPartUI(0);
             } else {
@@ -243,6 +248,7 @@ public class ShipBuilderManager : MonoBehaviour
         }
         backgroundSprites.Clear();
         gridSlotSelectedObj.gameObject.SetActive(false);
+        levelManager.StartNextLevelCombat();
     }
 
     private void LogShipSerialized() {
