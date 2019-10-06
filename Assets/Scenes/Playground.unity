@@ -2068,7 +2068,7 @@ PrefabInstance:
     - target: {fileID: 7267306364963818123, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: serialized
-      value: Shields1,180
+      value: Cockpit1,0
       objectReference: {fileID: 0}
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
@@ -2078,7 +2078,7 @@ PrefabInstance:
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
@@ -2088,22 +2088,22 @@ PrefabInstance:
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
@@ -2123,7 +2123,7 @@ PrefabInstance:
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fcd00e50033ace8489d59998cc10d88d, type: 3}
@@ -2530,7 +2530,7 @@ GameObject:
   m_Component:
   - component: {fileID: 749164116}
   m_Layer: 0
-  m_Name: Level 0
+  m_Name: '1: Just Cockpit'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

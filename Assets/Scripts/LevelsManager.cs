@@ -45,7 +45,7 @@ public class LevelsManager : MonoBehaviour
     private List<LevelData> levelData = new List<LevelData>() {
         //            w, h,   cockpits,      thrusters,     armors,        machine guns,  cannons,       shields,       missiles
         //new LevelData(5, 5, new[] {1,0,0}, new[] {9,9,9}, new[] {0,0,0}, new[] {9,0,0}, new[] {9,0,0}, new[] {0,0,0}, new[] {0,0,0}),
-        new LevelData(1, 2, new[] {1,0,0}, new[] {1,0,0}, new[] {1,0,0}, new[] {1,0,0}, new[] {1,0,0}, new[] {1,0,0}, new[] {1,0,0}),
+        new LevelData(1, 2, new[] {1,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
         new LevelData(1, 2, new[] {1,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
         new LevelData(2, 3, new[] {1,0,0}, new[] {2,0,0}, new[] {0,0,0}, new[] {2,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
         new LevelData(3, 3, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
@@ -67,12 +67,10 @@ public class LevelsManager : MonoBehaviour
             if (levelEnemies != null && levelEnemies.All(e => e == null)) {
                 Debug.Log("Detected win on level " + currentLevel);
                 currentLevel++;
-                levelVictoryUI.SetActive(true);
-                levelVictoryUI.GetComponentInChildren<TMP_Text>().text = "Well done Captain. Your success is a personal victory.";
+                ActivateLevelDoneScreen("Well done Captain. Your success is a personal victory.");
             } else if (playerShip != null && playerShip.All(s => s == null)) {
                 Debug.Log("Detected loss on level " + currentLevel);
-                levelVictoryUI.GetComponentInChildren<TMP_Text>().text = "Your failure was expected. Grab some scraps and return to base.";
-                levelVictoryUI.SetActive(true);
+                ActivateLevelDoneScreen("Your failure was expected. Grab some scraps and return to base.");
             }
         }
     }
@@ -111,10 +109,20 @@ public class LevelsManager : MonoBehaviour
         Destroy(levelClone);
     }
 
+    private void ActivateLevelDoneScreen(string text) {
+        levelVictoryUI.SetActive(true);
+        levelVictoryUI.GetComponentInChildren<TMP_Text>().text = text;
+        foreach (EnemyShip enemy in levelEnemies.Where(e => e != null).Select(e => e.GetComponent<EnemyShip>())) {
+            enemy.control = false;
+        }
+        foreach (HumanShipInput human in playerShip.Where(e => e != null).Select(e => e.GetComponent<HumanShipInput>())) {
+            human.control = false;
+        }
+    }
+
     public void OnGiveUpButton() {
         if (!levelVictoryUI.activeSelf) {
-            levelVictoryUI.SetActive(true);
-            levelVictoryUI.GetComponentInChildren<TMP_Text>().text = "Your lack of courage is unwavering. Return to base for motivational seminars.";
+            ActivateLevelDoneScreen("Your lack of courage is unwavering. Return to base for motivational disciplinary action.");
         }
     }
 

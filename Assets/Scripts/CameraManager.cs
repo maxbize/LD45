@@ -40,6 +40,7 @@ public class CameraManager : MonoBehaviour
 
     public void StopTracking() {
         cam.orthographicSize = defaultSize;
+        transform.up = Vector2.up;
         primaryTarget = null;
         secondaryTargets = null;
     }

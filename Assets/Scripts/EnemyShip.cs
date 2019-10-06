@@ -10,10 +10,13 @@ public class EnemyShip : MonoBehaviour
     // Sorted top left to bottom right
     public string serialized;
 
+    public bool control;
+
     private ShipController shipController;
 
     // Start is called before the first frame update
-    void Start() {
+    void Start() { 
+        control = true;
         shipController = GetComponent<ShipController>();
         BuildShip();
         shipController.RegisterParts(GetComponentsInChildren<ShipPart>().ToList());
@@ -25,7 +28,9 @@ public class EnemyShip : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        shipController.Attack();
+        if (control) {
+            shipController.Attack();
+        }
     }
 
     private void BuildShip() {

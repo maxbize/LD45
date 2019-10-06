@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01302b4d35a71b540993530cf1505148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 100
+  thrustForce: 500
   thrustParticles: {fileID: 4028224834599188695}
 --- !u!1001 &2918534751986043579
 PrefabInstance:
@@ -21,41 +21,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.newSize.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.newSize.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 5812854026432708697, guid: 228580b53e057c64e8493267df0c5e7a,
         type: 3}
       propertyPath: m_Name
@@ -131,6 +96,41 @@ PrefabInstance:
         type: 3}
       propertyPath: partName
       value: Thrusters
+      objectReference: {fileID: 0}
+    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 834249718124705476, guid: 228580b53e057c64e8493267df0c5e7a,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 228580b53e057c64e8493267df0c5e7a, type: 3}

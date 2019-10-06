@@ -6,6 +6,8 @@ using UnityEngine;
 public class HumanShipInput : MonoBehaviour
 {
 
+    public bool control;
+
     private ShipController shipController;
     private bool up;
     private bool down;
@@ -17,19 +19,20 @@ public class HumanShipInput : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
+        control = true;
         shipController = GetComponent<ShipController>();
     }
 
     // Update is called once per frame
     void Update() {
-        up = Input.GetKey(KeyCode.W);
-        down = Input.GetKey(KeyCode.S);
-        right = Input.GetKey(KeyCode.D);
-        left = Input.GetKey(KeyCode.A);
-        posRotate = Input.GetKey(KeyCode.Q);
-        negRotate = Input.GetKey(KeyCode.E);
+        up = Input.GetKey(KeyCode.W) && control;
+        down = Input.GetKey(KeyCode.S) && control;
+        right = Input.GetKey(KeyCode.D) && control;
+        left = Input.GetKey(KeyCode.A) && control;
+        posRotate = Input.GetKey(KeyCode.Q) && control;
+        negRotate = Input.GetKey(KeyCode.E) && control;
 
-        attack = Input.GetKey(KeyCode.Space);
+        attack = Input.GetKey(KeyCode.Space) && control;
     }
 
     private void FixedUpdate() {
