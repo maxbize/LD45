@@ -2056,7 +2056,7 @@ PrefabInstance:
     - target: {fileID: 7267306364963818123, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: serialized
-      value: MachineGun1,180,next,next,MachineGun1,180,next,next,Thrusters1,0,Thrusters1,0,Thrusters1,0
+      value: Cockpit1,0
       objectReference: {fileID: 0}
     - target: {fileID: 5287635904301869964, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
@@ -5511,7 +5511,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1964471920
 RectTransform:
   m_ObjectHideFlags: 0

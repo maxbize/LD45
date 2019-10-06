@@ -63,10 +63,10 @@ public class LevelsManager : MonoBehaviour
                 Debug.Log("Detected win on level " + currentLevel);
                 currentLevel++;
                 levelVictoryUI.SetActive(true);
-                levelVictoryUI.GetComponentInChildren<TMP_Text>().text = "Well done Captain. Your success is a personal vicotory.";
+                levelVictoryUI.GetComponentInChildren<TMP_Text>().text = "Well done Captain. Your success is a personal victory.";
             } else if (playerShip != null && playerShip.All(s => s == null)) {
                 Debug.Log("Detected loss on level " + currentLevel);
-                levelVictoryUI.GetComponentInChildren<TMP_Text>().text = "Your unsurprising failure has been noted. Return to base.";
+                levelVictoryUI.GetComponentInChildren<TMP_Text>().text = "Your failure was expected. Grab some scraps and return to base.";
                 levelVictoryUI.SetActive(true);
             }
         }
@@ -108,7 +108,8 @@ public class LevelsManager : MonoBehaviour
 
     public void OnGiveUpButton() {
         if (!levelVictoryUI.activeSelf) {
-            StartNextLevelBuilder();
+            levelVictoryUI.SetActive(true);
+            levelVictoryUI.GetComponentInChildren<TMP_Text>().text = "Your lack of courage is unwavering. Return to base for motivational seminars.";
         }
     }
 
