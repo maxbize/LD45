@@ -26,8 +26,9 @@ public class LevelsManager : MonoBehaviour
         public readonly int[] armors;
         public readonly int[] machineGuns;
         public readonly int[] cannons;
+        public readonly int[] shields;
 
-        public LevelData(int shipWidth, int shipHeight, int[] cockpits, int[] thrusters, int[] armors, int[] machineGuns, int[] cannons) {
+        public LevelData(int shipWidth, int shipHeight, int[] cockpits, int[] thrusters, int[] armors, int[] machineGuns, int[] cannons, int[] shields) {
             this.shipWidth = shipWidth;
             this.shipHeight = shipHeight;
             this.cockpits = cockpits;
@@ -35,18 +36,19 @@ public class LevelsManager : MonoBehaviour
             this.armors = armors;
             this.machineGuns = machineGuns;
             this.cannons = cannons;
+            this.shields = shields;
         }
     }
 
     private List<LevelData> levelData = new List<LevelData>() {
-        //            w, h,   cockpits,      thrusters,     armors,        machine guns,  cannons
-        //new LevelData(5, 5, new[] {1,0,0}, new[] {9,9,9}, new[] {0,0,0}, new[] {9,0,0}, new[] {9,0,0}), // Debugging
-        new LevelData(1, 2, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {1,0,0}, new[] {0,0,0}),
-        new LevelData(1, 2, new[] {1,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {1,0,0}, new[] {0,0,0}),
-        new LevelData(2, 3, new[] {1,0,0}, new[] {2,0,0}, new[] {0,0,0}, new[] {2,0,0}, new[] {0,0,0}),
-        new LevelData(3, 3, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
-        new LevelData(4, 4, new[] {0,1,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
-        new LevelData(5, 5, new[] {0,1,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
+        //            w, h,   cockpits,      thrusters,     armors,        machine guns,  cannons,       shields
+        //new LevelData(5, 5, new[] {1,0,0}, new[] {9,9,9}, new[] {0,0,0}, new[] {9,0,0}, new[] {9,0,0}, new[] {0,0,0}),
+        new LevelData(1, 2, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {1,0,0}),
+        new LevelData(1, 2, new[] {1,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}),
+        new LevelData(2, 3, new[] {1,0,0}, new[] {2,0,0}, new[] {0,0,0}, new[] {2,0,0}, new[] {0,0,0}, new[] {0,0,0}),
+        new LevelData(3, 3, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
+        new LevelData(4, 4, new[] {0,1,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
+        new LevelData(5, 5, new[] {0,1,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
     };
 
     // Start is called before the first frame update

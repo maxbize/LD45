@@ -21,7 +21,7 @@ public class ProjectileWeapon : MonoBehaviour
 
     }
 
-    public void Attack() {
+    public bool Attack() {
         if (timer == 0) {
             // Make the first shot random so that every weapon is not in perfect sync
             timer = Time.timeSinceLevelLoad + Random.Range(0, cooldown);
@@ -30,6 +30,8 @@ public class ProjectileWeapon : MonoBehaviour
             timer = Time.timeSinceLevelLoad + cooldown;
             GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
             projectile.layer = gameObject.layer;
+            return true;
         }
+        return false;
     }
 }

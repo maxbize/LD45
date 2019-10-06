@@ -132,11 +132,12 @@ public class ShipController : MonoBehaviour
     }
 
     public void Attack() {
-        if (weapons.Count > 0) {
-            cameraManager.AddScreenShake(0.2f);
-        }
+        bool attacked = false;
         foreach (ProjectileWeapon weapon in weapons) {
-            weapon.Attack();
+            attacked |= weapon.Attack();
+        }
+        if (attacked) {
+            cameraManager.AddScreenShake(0.1f);
         }
     }
 

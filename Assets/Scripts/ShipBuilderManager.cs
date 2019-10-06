@@ -71,6 +71,7 @@ public class ShipBuilderManager : MonoBehaviour
         AddPartsToInventory("Cockpit", levelData.cockpits);
         AddPartsToInventory("Thrusters", levelData.thrusters);
         AddPartsToInventory("Armors", levelData.armors);
+        AddPartsToInventory("Shields", levelData.shields);
         AddPartsToInventory("Machine Gun", levelData.machineGuns);
         AddPartsToInventory("Cannon", levelData.cannons);
     }

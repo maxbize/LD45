@@ -40,6 +40,9 @@ public class ShipPart : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.collider is CircleCollider2D) {
+            return; // No physical damage against shields
+        }
         ShipPart otherPart = collision.collider.GetComponent<ShipPart>();
         int damage = (int)collision.relativeVelocity.magnitude * 50;
         TakeDamage(damage);
