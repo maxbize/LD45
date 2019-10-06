@@ -6,7 +6,10 @@ using UnityEngine;
 public class ShipController : MonoBehaviour
 {
     // Set in editor
-
+    // Add some drags and frictions to make control easier
+    public float notRotatingRotationalDrag;
+    public float rotatingRotationalDrag; // Drag amounts for when we are / aren't trying to rotate
+    public float correctionDrag; // Apply a drag to nullify velocity not in our forward direction
 
     private List<ShipPart> parts;
     private List<Thrusters> forwardThrusters = new List<Thrusters>();
@@ -103,10 +106,13 @@ public class ShipController : MonoBehaviour
         if (left) {
             activeThrusters.AddRange(leftThrusters);
         }
+        rb.angularDrag = notRotatingRotationalDrag;
         if (rotatePositive) {
+            rb.angularDrag = rotatingRotationalDrag;
             activeThrusters.AddRange(positiveTorqueThrusters);
         }
         if (rotateNegative) {
+            rb.angularDrag = rotatingRotationalDrag;
             activeThrusters.AddRange(negativeTorqueThrusters);
         }
 
@@ -118,6 +124,9 @@ public class ShipController : MonoBehaviour
                 thruster.DisableThruster();
             }
         }
+
+        Vector2 correctionForce = -Vector2.Dot(transform.right, rb.velocity) * transform.right * correctionDrag;
+        rb.AddForce(correctionForce);
     }
 
     public void Attack() {

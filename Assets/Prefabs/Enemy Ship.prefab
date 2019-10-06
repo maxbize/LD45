@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20c2b07f63d8c3f4b8b97aca30b47c2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  notRotatingRotationalDrag: 1
+  rotatingRotationalDrag: 0.1
+  correctionDrag: 100
 --- !u!50 &5858014883007352339
 Rigidbody2D:
   serializedVersion: 4
@@ -78,6 +81,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a404155c3d482e9408b0b5dc2b240174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0
-  height: 0
   serialized: 

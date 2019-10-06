@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20c2b07f63d8c3f4b8b97aca30b47c2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  notRotatingRotationalDrag: 1
+  rotatingRotationalDrag: 0.1
+  correctionDrag: 100
 --- !u!114 &-583923544353662319
 MonoBehaviour:
   m_ObjectHideFlags: 0
