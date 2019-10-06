@@ -2062,15 +2062,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 749164116}
     m_Modifications:
-    - target: {fileID: 7267306364963818123, guid: fcd00e50033ace8489d59998cc10d88d,
-        type: 3}
-      propertyPath: serialized
-      value: Cockpit1,0
-      objectReference: {fileID: 0}
     - target: {fileID: 5287635904301869964, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ship
+      objectReference: {fileID: 0}
+    - target: {fileID: 7267306364963818123, guid: fcd00e50033ace8489d59998cc10d88d,
+        type: 3}
+      propertyPath: serialized
+      value: Cockpit1,0
       objectReference: {fileID: 0}
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
@@ -3679,6 +3679,7 @@ MonoBehaviour:
   - {fileID: 36089990}
   rotatePartButton: {fileID: 1563818523}
   removePartButton: {fileID: 253578204}
+  playButton: {fileID: 255188839}
   SP_title: {fileID: 131385375}
   SP_mark: {fileID: 365175618}
   SP_place: {fileID: 886693233}
@@ -10783,15 +10784,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1010178318}
     m_Modifications:
-    - target: {fileID: 7267306364963818123, guid: fcd00e50033ace8489d59998cc10d88d,
-        type: 3}
-      propertyPath: serialized
-      value: Thrusters1,0,next,next,Cockpit1,0
-      objectReference: {fileID: 0}
     - target: {fileID: 5287635904301869964, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ship
+      objectReference: {fileID: 0}
+    - target: {fileID: 7267306364963818123, guid: fcd00e50033ace8489d59998cc10d88d,
+        type: 3}
+      propertyPath: serialized
+      value: Thrusters1,0,next,next,Cockpit1,0
       objectReference: {fileID: 0}
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}

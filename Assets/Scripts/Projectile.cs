@@ -26,6 +26,7 @@ public class Projectile : MonoBehaviour
         Projectile projectile = collider.GetComponent<Projectile>();
         if (shipPart != null) {
             if (!alreadyDamaged) {
+                Debug.LogFormat("Dealing {0} damage to {1}", damage, shipPart);
                 shipPart.TakeDamage(damage);
                 alreadyDamaged = true;
                 Destroy(gameObject);

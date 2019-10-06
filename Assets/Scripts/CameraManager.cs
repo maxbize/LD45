@@ -25,20 +25,29 @@ public class CameraManager : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         cam = GetComponent<Camera>();
-
-        // TODO: Get these from somewhere...
-        //primaryTarget = FindObjectOfType<HumanShipInput>();
-        secondaryTargets = new List<GameObject>();
-        secondaryTargets.AddRange(FindObjectsOfType<EnemyShip>().Select(s => s.gameObject));
+        defaultSize = cam.orthographicSize;
 
         if (debug) {
             debugMarker = new GameObject("Camera target");
         }
     }
 
+    public void TrackTargets(GameObject primary) {
+        primaryTarget = primary;
+        secondaryTargets = new List<GameObject>();
+        secondaryTargets.AddRange(FindObjectsOfType<EnemyShip>().Select(s => s.gameObject));
+    }
+
+    public void StopTracking() {
+        cam.orthographicSize = defaultSize;
+        primaryTarget = null;
+        secondaryTargets = null;
+    }
+
     // Update is called once per frame
     void Update() {
         if (primaryTarget == null) {
+            cam.orthographicSize = defaultSize;
             return;
         }
 
@@ -47,7 +56,7 @@ public class CameraManager : MonoBehaviour
         Vector2 targetPos = primaryTarget.transform.position;
         targetPos += primaryTarget.GetComponent<Rigidbody2D>().velocity * velocityWeight;
         Vector2 secondaryPull = Vector2.zero;
-        foreach (GameObject secondaryTarget in secondaryTargets) {
+        foreach (GameObject secondaryTarget in secondaryTargets.Where(t => t != null)) {
             secondaryPull += ((Vector2)secondaryTarget.transform.position - targetPos);
         }
         targetPos += secondaryPull * secondaryWeight;

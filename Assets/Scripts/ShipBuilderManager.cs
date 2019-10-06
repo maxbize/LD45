@@ -17,6 +17,7 @@ public class ShipBuilderManager : MonoBehaviour
     public RectTransform[] partSelectButtons;
     public Button rotatePartButton;
     public Button removePartButton;
+    public Button playButton;
     // Selected Part
     public TMP_Text SP_title;
     public TMP_Text SP_mark;
@@ -32,11 +33,13 @@ public class ShipBuilderManager : MonoBehaviour
     private LevelsManager.LevelData levelData;
     private Dictionary<string, int> inventory; // [partName + mark -> num parts]. Not a dict to force an order
     private LevelsManager levelManager;
+    private CameraManager cameraManager;
 
     // Start is called before the first frame update
     void Start() {
         shipFactory = FindObjectOfType<ShipFactory>();
         levelManager = FindObjectOfType<LevelsManager>();
+        cameraManager = FindObjectOfType<CameraManager>();
     }
 
     public void Initialize(LevelsManager.LevelData levelData) {
@@ -49,6 +52,7 @@ public class ShipBuilderManager : MonoBehaviour
         SetupPartSelectionUI();
         SetupSelectedPartUI(0);
         SetupBuilderBackground();
+        playButton.interactable = false;
     }
 
     // Update is called once per frame
@@ -136,6 +140,7 @@ public class ShipBuilderManager : MonoBehaviour
         }
 
         // Center the camera
+        cameraManager.StopTracking();
         Camera cam = Camera.main;
         Vector3 camPos = cam.transform.position;
         // 0.5 = pivot of square, 2.2 = offset for UI (HACK)
@@ -171,6 +176,9 @@ public class ShipBuilderManager : MonoBehaviour
             } else {
                 SP_place.text = "Place (" + inventory[key] + ")";
             }
+            if (inFlightPart.partName == "Cockpit") {
+                playButton.interactable = true;
+            }
             inFlightPart = null;
         }
         if (gridParts[x, y] != null) {
@@ -193,6 +201,9 @@ public class ShipBuilderManager : MonoBehaviour
                 }
             } else {
                 inventory[key]++;
+            }
+            if (gridParts[x, y].partName == "Cockpit") {
+                playButton.interactable = false;
             }
             Destroy(gridParts[x, y].gameObject);
         }
@@ -242,7 +253,7 @@ public class ShipBuilderManager : MonoBehaviour
         if (inFlightPart != null) {
             Destroy(inFlightPart.gameObject);
         }
-        shipFactory.CreateShip(gridParts);
+        GameObject ship = shipFactory.CreateShip(gridParts);
         builderUI.gameObject.SetActive(false);
         foreach (GameObject go in backgroundSprites) {
             Destroy(go);
@@ -250,6 +261,7 @@ public class ShipBuilderManager : MonoBehaviour
         backgroundSprites.Clear();
         gridSlotSelectedObj.gameObject.SetActive(false);
         levelManager.StartNextLevelCombat();
+        cameraManager.TrackTargets(ship);
     }
 
     private void LogShipSerialized() {
