@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Mostly just holds data. Does what people tell it to
 public class LevelsManager : MonoBehaviour
 {
     // Set in editor
     public int currentLevel; // Here for debugging ;)
 
-    private class LevelData
+    private ShipBuilderManager builder;
+
+    public class LevelData
     {
         public readonly int shipWidth;
         public readonly int shipHeight;
@@ -40,7 +43,7 @@ public class LevelsManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-
+        builder = FindObjectOfType<ShipBuilderManager>();
     }
 
     // Update is called once per frame
@@ -49,6 +52,6 @@ public class LevelsManager : MonoBehaviour
     }
 
     public void StartNextLevel() {
-
+        builder.Initialize(levelData[currentLevel]);
     }
 }

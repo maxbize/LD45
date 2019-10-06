@@ -11,11 +11,13 @@ public class ShipFactory : MonoBehaviour
     public GameObject playerShipPrefab;
     public GameObject[] partPrefabs;
 
-    private Dictionary<string, Sprite> shipSprites;
+    private Dictionary<string, ShipPart> nameMarksToParts; // name + mark -> part
 
     // Start is called before the first frame update
     void Start() {
-
+        nameMarksToParts = partPrefabs
+            .Select(go => go.GetComponent<ShipPart>())
+            .ToDictionary(p => p.partName + p.mark, p => p);
     }
 
     // Update is called once per frame
@@ -44,10 +46,7 @@ public class ShipFactory : MonoBehaviour
         return ship;
     }
 
-    public Sprite GetSpriteForPart(ShipPartData data) {
-        if (shipSprites == null) {
-            shipSprites = Resources.LoadAll<Sprite>("Sprites/Ships").ToDictionary(s => s.name, s => s);
-        }
-        return shipSprites[data.spriteName];
+    public ShipPart GetPrefabByNameAndMark(string nameAndMark) {
+        return nameMarksToParts[nameAndMark];
     }
 }

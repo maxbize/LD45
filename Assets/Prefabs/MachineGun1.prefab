@@ -61,7 +61,7 @@ PrefabInstance:
     - target: {fileID: 5812854026432708697, guid: 228580b53e057c64e8493267df0c5e7a,
         type: 3}
       propertyPath: m_Name
-      value: Ship Part Prefab - Machine Gun 1 Variant
+      value: MachineGun1
       objectReference: {fileID: 0}
     - target: {fileID: 70591720301218788, guid: 228580b53e057c64e8493267df0c5e7a,
         type: 3}
@@ -133,6 +133,11 @@ PrefabInstance:
         type: 3}
       propertyPath: partName
       value: Machine Gun
+      objectReference: {fileID: 0}
+    - target: {fileID: -8384597918380106220, guid: 228580b53e057c64e8493267df0c5e7a,
+        type: 3}
+      propertyPath: type
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 228580b53e057c64e8493267df0c5e7a, type: 3}
