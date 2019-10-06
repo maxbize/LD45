@@ -69,7 +69,6 @@ public class ShipBuilderManager : MonoBehaviour
         AddPartsToInventory("Armors", levelData.armors);
         AddPartsToInventory("Machine Gun", levelData.machineGuns);
         AddPartsToInventory("Cannon", levelData.cannons);
-        Debug.LogFormat("Inventory: {0}", string.Join(", ", inventory.Select(kv => kv.Key + ":" + kv.Value)));
     }
 
     private void AddPartsToInventory(string partName, int[] partsArray) {
@@ -267,7 +266,7 @@ public class ShipBuilderManager : MonoBehaviour
             }
             sb.Append("next,next,");
         }
-        sb.Length--; // Trim off the last comma
+        sb.Length -= ",next,next,".Length; // Trim off the last bits
         Debug.Log(sb.ToString());
     }
 }

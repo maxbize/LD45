@@ -36,8 +36,6 @@ public class ShipController : MonoBehaviour
     }
 
     public void RegisterParts(List<ShipPart> parts) {
-        Debug.LogFormat("Registered {0} parts for " + name, parts.Count);
-
         this.parts = parts;
         rb = GetComponent<Rigidbody2D>(); // Might get called before Start
 
@@ -132,6 +130,7 @@ public class ShipController : MonoBehaviour
 
         if (part.partName == "Cockpit") {
             // Inverse for loop because each death will modify parts with the callback
+            Debug.LogFormat("Killing remaining {0} parts", parts.Count);
             for (int i = parts.Count - 1; i >=0; i--) {
                 // TODO: It would be really cool if we could show each part blowing up in succession
                 parts[i].TakeDamage(parts[i].maxHealth);

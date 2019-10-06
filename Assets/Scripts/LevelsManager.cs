@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 // Mostly just holds data. Does what people tell it to
 public class LevelsManager : MonoBehaviour
@@ -14,6 +15,7 @@ public class LevelsManager : MonoBehaviour
     private GameManager gameManager;
     private ShipBuilderManager builder;
     private List<GameObject> levelEnemies;
+    private List<GameObject> playerShip; // HACK! Don't need a list ;)
 
     public class LevelData
     {
@@ -56,10 +58,17 @@ public class LevelsManager : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if (!levelVictoryUI.activeSelf && levelEnemies != null && levelEnemies.All(e => e == null)) {
-            Debug.Log("Detected win on level " + currentLevel);
-            currentLevel++;
-            levelVictoryUI.SetActive(true);
+        if (!levelVictoryUI.activeSelf) {
+            if (levelEnemies != null && levelEnemies.All(e => e == null)) {
+                Debug.Log("Detected win on level " + currentLevel);
+                currentLevel++;
+                levelVictoryUI.SetActive(true);
+                levelVictoryUI.GetComponentInChildren<TMP_Text>().text = "Well done Captain. Your success is a personal vicotory.";
+            } else if (playerShip != null && playerShip.All(s => s == null)) {
+                Debug.Log("Detected loss on level " + currentLevel);
+                levelVictoryUI.GetComponentInChildren<TMP_Text>().text = "Your unsurprising failure has been noted. Return to base.";
+                levelVictoryUI.SetActive(true);
+            }
         }
     }
 
@@ -72,6 +81,7 @@ public class LevelsManager : MonoBehaviour
             }
         }
         levelEnemies = null;
+        playerShip = null;
         HumanShipInput player = FindObjectOfType<HumanShipInput>();
         if (player != null) {
             Destroy(player.gameObject);
@@ -91,6 +101,8 @@ public class LevelsManager : MonoBehaviour
             enemy.transform.parent = null;
             levelEnemies.Add(enemy.gameObject);
         }
+        playerShip = new List<GameObject>();
+        playerShip.Add(FindObjectOfType<HumanShipInput>().gameObject);
         Destroy(levelClone);
     }
 

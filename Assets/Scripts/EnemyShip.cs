@@ -24,6 +24,10 @@ public class EnemyShip : MonoBehaviour
 
     }
 
+    private void FixedUpdate() {
+        shipController.Attack();
+    }
+
     private void BuildShip() {
         if (serialized == null) {
             Debug.LogError("Enemy ship instance but no state to build from for: " + name);
@@ -45,7 +49,6 @@ public class EnemyShip : MonoBehaviour
             if (partName != "null") {
                 Quaternion partRotation = Quaternion.Euler(0, 0, int.Parse(split[i + 1]));
                 GameObject partObj = Instantiate(partMap[partName], transform.position + new Vector3(x, y, 0), partRotation, transform);
-                partObj.GetComponent<ShipPart>().Initialize();
             }
             x++;
         }

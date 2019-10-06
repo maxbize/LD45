@@ -31,8 +31,6 @@ public class ShipFactory : MonoBehaviour
         int numParts = 0;
         foreach (ShipPart part in parts) {
             if (part != null) {
-                part.Initialize();
-
                 center += part.transform.position;
                 numParts++;
             }

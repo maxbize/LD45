@@ -15,7 +15,6 @@ public class ShipPart : MonoBehaviour
     private float timer;
     private GameObject cachedChildPrefab;
     private int health;
-    private ShipController controller;
     private ParticleSystem damagedPS;
 
     // Start is called before the first frame update
@@ -29,15 +28,11 @@ public class ShipPart : MonoBehaviour
 
     }
 
-    public void Initialize() {
-        controller = GetComponentInParent<ShipController>();
-    }
-
     public void TakeDamage(int damage) {
         health -= damage;
         if (health <= 0) {
             Instantiate(destroyedParticles, transform.position, transform.rotation);
-            controller.NotifyPartDestroyed(this);
+            GetComponentInParent<ShipController>().NotifyPartDestroyed(this);
             Destroy(gameObject);
         }
         ParticleSystem.EmissionModule emission = damagedPS.emission;
