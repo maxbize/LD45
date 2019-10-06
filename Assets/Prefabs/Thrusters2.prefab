@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thrustForce: 100
+  thrustParticles: {fileID: 7975969115415744497}
 --- !u!1001 &2918534751986043579
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58,7 +59,7 @@ PrefabInstance:
     - target: {fileID: 5812854026432708697, guid: 228580b53e057c64e8493267df0c5e7a,
         type: 3}
       propertyPath: m_Name
-      value: Ship Part Prefab - Thrusters 2 Variant
+      value: Thrusters2
       objectReference: {fileID: 0}
     - target: {fileID: 70591720301218788, guid: 228580b53e057c64e8493267df0c5e7a,
         type: 3}
@@ -219,3 +220,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77292366eca433e42b2f4a0453685be3, type: 3}
+--- !u!198 &7975969115415744497 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4760890773931379784, guid: 77292366eca433e42b2f4a0453685be3,
+    type: 3}
+  m_PrefabInstance: {fileID: 3216204868457513913}
+  m_PrefabAsset: {fileID: 0}

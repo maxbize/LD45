@@ -6,13 +6,11 @@ public class Thrusters : MonoBehaviour
 {
     // Set in editor
     public int thrustForce;
-
-
-    private ParticleSystem thrustParticles;
+    public ParticleSystem thrustParticles;
 
     // Start is called before the first frame update
     void Start() {
-        thrustParticles = GetComponentInChildren<ParticleSystem>();
+
     }
 
     // Update is called once per frame
