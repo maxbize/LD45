@@ -159,8 +159,8 @@ public class ShipBuilderManager : MonoBehaviour
             return;
         }
 
-        // TEMP DEBUGGING - FAST BUILDING BUT NO CONSTRAINTS
-        if (inFlightPart == null) {
+        // TEMP DEBUGGING - FAST BUILDING BUT NO CONSTRAINTS. Or is it? ;)
+        if (inFlightPart == null && gridParts[x, y] == null && !nothingUI.gameObject.activeSelf) {
             inFlightPart = Instantiate(selectedPart, Utils.GetMouseWorldPos(), Quaternion.identity);
         }
 

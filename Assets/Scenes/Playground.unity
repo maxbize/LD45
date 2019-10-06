@@ -10025,7 +10025,7 @@ PrefabInstance:
     - target: {fileID: 7267306364963818123, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: serialized
-      value: Armor1,0,Armor1,0,Armor1,0,Armor1,0,Armor1,0,Armor1,0,Armor1,0,Armor1,0,Armor1,0,next,next,MachineGun1,90,MachineGun1,90,MachineGun1,90,MachineGun1,90,MachineGun1,90,MachineGun1,90,MachineGun1,90,MachineGun1,90,MachineGun1,90,next,next,Thrusters1,270,Thrusters1,90,Thrusters1,270,Thrusters1,90,Cockpit1,270,Thrusters1,270,Thrusters1,90,Thrusters1,270,Thrusters1,90
+      value: Armor1,0,Armor1,0,Armor1,0,Armor1,0,Armor1,0,Armor1,0,Armor1,0,Armor1,0,Armor1,0,next,next,MachineGun1,90,MachineGun1,90,MachineGun1,90,MachineGun1,90,MachineGun1,90,MachineGun1,90,MachineGun1,90,MachineGun1,90,MachineGun1,90,next,next,Thrusters1,270,Thrusters1,90,Thrusters1,270,Thrusters1,90,Cockpit1,90,Thrusters1,270,Thrusters1,90,Thrusters1,270,Thrusters1,90
       objectReference: {fileID: 0}
     - target: {fileID: 7267306364963818123, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}

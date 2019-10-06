@@ -96,8 +96,8 @@ public class EnemyShip : MonoBehaviour
     }
 
     private void RotateTowardsPlayer() {
-        Vector2 toPlayer = (playerShip.position - transform.position).normalized;
-        if (Vector3.Cross(toPlayer, cockpit.up).z > 0) {
+        Vector2 toPlayer = (playerShip.position - cockpit.position).normalized;
+        if (Vector3.Cross(toPlayer, cockpit.up).z < 0) {
             shipController.Move(false, false, false, false, true, false);
         } else {
             shipController.Move(false, false, false, false, false, true);

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,13 +28,13 @@ public class ShipController : MonoBehaviour
     void Start() {
         rb = GetComponent<Rigidbody2D>();
         cameraManager = FindObjectOfType<CameraManager>();
-        if (parts == null) { // Happens in debug mode
+        /*if (parts == null) { // Happens in debug mode
             List<ShipPart> asList = new List<ShipPart>();
             foreach (ShipPart part in GetComponentsInChildren<ShipPart>()) {
                 asList.Add(part);
             }
             RegisterParts(asList);
-        }
+        }*/
     }
 
     // Update is called once per frame
@@ -42,6 +43,7 @@ public class ShipController : MonoBehaviour
     }
 
     public void RegisterParts(ShipPart[,] parts) {
+
         List<ShipPart> asList = new List<ShipPart>();
         foreach (ShipPart part in parts) {
             asList.Add(part);
@@ -50,7 +52,8 @@ public class ShipController : MonoBehaviour
     }
 
     public void RegisterParts(List<ShipPart> parts) {
-        this.parts = parts;
+        Debug.Log(string.Join(", ", parts.Where(p => p != null).Select(p => p.name)));
+        this.parts = parts.Distinct().ToList(); // Some bug with dupes somewhere... HACK!
         rb = GetComponent<Rigidbody2D>(); // Might get called before Start
 
         foreach (ShipPart part in parts) {
@@ -145,6 +148,7 @@ public class ShipController : MonoBehaviour
 
     public void NotifyPartDestroyed(ShipPart part) {
         parts.Remove(part);
+        parts = parts.Where(p => p != null).ToList(); // HACK! Don't know why I need this. Single cockpit throws errors otherwise
         cameraManager.AddScreenShake(1.5f);
 
         Thrusters thruster = part.GetComponent<Thrusters>();
