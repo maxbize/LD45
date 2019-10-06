@@ -90,6 +90,9 @@ public class CameraManager : MonoBehaviour
 
     public void AddScreenShake(float amount) {
         screenShakeAmount += amount;
+        if (screenShakeAmount > 3f) {
+            screenShakeAmount = 3f;
+        }
     }
 
 }
