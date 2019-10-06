@@ -9,18 +9,17 @@ public class CameraManager : MonoBehaviour
     public bool debug;
     public float minSize;
     public float maxSize;
-    public float moveLerpRate;
-    public float sizeLerpRate;
-    public float rotLerpRate;
     public float velocityWeight;
     public float secondaryWeight;
     public float maxDistance; // From primary target
+    public float screenShakeDecayRate;
 
     private GameObject primaryTarget;
     private List<GameObject> secondaryTargets;
     private float defaultSize;
     private Camera cam;
     private GameObject debugMarker;
+    private float screenShakeAmount;
 
     // Start is called before the first frame update
     void Start() {
@@ -72,11 +71,16 @@ public class CameraManager : MonoBehaviour
         float targetSize = ((Vector2)primaryTarget.transform.position - targetPos).magnitude * 2;
         targetSize = Mathf.Clamp(targetSize, minSize, maxSize);
 
-        // Lerp to targets
-        //transform.position = Vector3.Lerp(transform.position, (Vector3)targetPos + Vector3.back * 10, moveLerpRate * Time.deltaTime);
-        //transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, rotLerpRate * Time.deltaTime);
-        //cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetSize, sizeLerpRate * Time.deltaTime);
-        transform.position = (Vector3)targetPos + Vector3.back * 10;
+        // SCREEN SHAKE BABY!!!
+        float shakeAmp = Mathf.Pow(Mathf.PerlinNoise(Mathf.Cos(Time.timeSinceLevelLoad), -4f) * screenShakeAmount, 2);
+        Vector2 shake = Random.insideUnitCircle.normalized * shakeAmp;
+        screenShakeAmount -= screenShakeDecayRate;
+        if (screenShakeAmount < 0) {
+            screenShakeAmount = 0;
+        }
+
+        // Snap to targets
+        transform.position = (Vector3)targetPos + Vector3.back * 10 + (Vector3)shake;
         transform.rotation = targetRot;
         cam.orthographicSize = targetSize;
         if (debug) {
@@ -84,5 +88,8 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    public void AddScreenShake(float amount) {
+        screenShakeAmount += amount;
+    }
 
 }

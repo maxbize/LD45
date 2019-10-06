@@ -21,6 +21,7 @@ public class ShipController : MonoBehaviour
     private List<Thrusters> thrusters = new List<Thrusters>();
     private List<ProjectileWeapon> weapons = new List<ProjectileWeapon>();
     private Rigidbody2D rb;
+    private CameraManager cameraManager;
 
     // Start is called before the first frame update
     void Start() {
@@ -30,6 +31,7 @@ public class ShipController : MonoBehaviour
             asList.Add(part);
         }
         RegisterParts(asList);
+        cameraManager = FindObjectOfType<CameraManager>();
     }
 
     // Update is called once per frame
@@ -130,6 +132,9 @@ public class ShipController : MonoBehaviour
     }
 
     public void Attack() {
+        if (weapons.Count > 0) {
+            cameraManager.AddScreenShake(0.2f);
+        }
         foreach (ProjectileWeapon weapon in weapons) {
             weapon.Attack();
         }
@@ -137,6 +142,7 @@ public class ShipController : MonoBehaviour
 
     public void NotifyPartDestroyed(ShipPart part) {
         parts.Remove(part);
+        cameraManager.AddScreenShake(1f);
 
         Thrusters thruster = part.GetComponent<Thrusters>();
         if (thruster != null) {

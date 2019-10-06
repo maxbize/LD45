@@ -1989,15 +1989,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40dabe97e7e92aa458e98a017ed8ced2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
+  debug: 1
   minSize: 8
   maxSize: 20
-  moveLerpRate: 1
-  sizeLerpRate: 0.1
-  rotLerpRate: 0.1
   velocityWeight: 0.5
   secondaryWeight: 0.33
   maxDistance: 15
+  screenShakeDecayRate: 0.2
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
