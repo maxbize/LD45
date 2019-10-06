@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         GetComponent<Rigidbody2D>().velocity = transform.up * speed;
+        Invoke("Die", 10);
     }
 
     // Update is called once per frame
@@ -34,5 +35,9 @@ public class Projectile : MonoBehaviour
         } else {
             Debug.Log("I don't know what this projectile just hit: " + collider.gameObject);
         }
+    }
+
+    private void Die() {
+        Destroy(gameObject);
     }
 }

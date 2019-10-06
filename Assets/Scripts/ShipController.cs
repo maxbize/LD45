@@ -20,6 +20,11 @@ public class ShipController : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         rb = GetComponent<Rigidbody2D>();
+        List<ShipPart> asList = new List<ShipPart>();
+        foreach (ShipPart part in GetComponentsInChildren<ShipPart>()) {
+            asList.Add(part);
+        }
+        RegisterParts(asList);
     }
 
     // Update is called once per frame
