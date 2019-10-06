@@ -218,6 +218,9 @@ public class ShipBuilderManager : MonoBehaviour
         int numSlots = partSelectButtons.Length;
         int newIndex = partScrollIndex + (upArrow ? -1 : 1);
         partScrollIndex = Mathf.Clamp(newIndex, 0, numParts - numSlots);
+        if (partScrollIndex < 0) {
+            partScrollIndex = 0;
+        }
         SetupPartSelectionUI();
     }
 
