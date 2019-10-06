@@ -74,6 +74,7 @@ public class ShipBuilderManager : MonoBehaviour
         AddPartsToInventory("Shields", levelData.shields);
         AddPartsToInventory("Machine Gun", levelData.machineGuns);
         AddPartsToInventory("Cannon", levelData.cannons);
+        AddPartsToInventory("Missiles", levelData.missiles);
     }
 
     private void AddPartsToInventory(string partName, int[] partsArray) {

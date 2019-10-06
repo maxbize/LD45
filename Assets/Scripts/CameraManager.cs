@@ -35,6 +35,7 @@ public class CameraManager : MonoBehaviour
         primaryTarget = primary;
         secondaryTargets = new List<GameObject>();
         secondaryTargets.AddRange(FindObjectsOfType<EnemyShip>().Select(s => s.gameObject));
+        screenShakeAmount = 0;
     }
 
     public void StopTracking() {

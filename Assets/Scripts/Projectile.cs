@@ -7,9 +7,12 @@ public class Projectile : MonoBehaviour
     // Set in editor
     public float speed;
     public int damage;
+    public float trackingForce;
+    public float trackingRot;
 
     private bool alreadyDamaged = false; // Sometimes we hit two things. Only count one of them
     private Rigidbody2D rb;
+    private Transform target;
 
     // Start is called before the first frame update
     void Start() {
@@ -18,9 +21,17 @@ public class Projectile : MonoBehaviour
         Invoke("Die", 10);
     }
 
-    // Update is called once per frame
-    void Update() {
+    void FixedUpdate() {
+        if (target != null) {
+            Vector2 toTarget = (target.transform.position - transform.position).normalized;
+            rb.AddForce(toTarget * trackingForce);
+            transform.up = rb.velocity.normalized;
+            //rb.velocity = Vector2.Lerp(rb.velocity.normalized, toTarget, trackingRot) * rb.velocity.magnitude;
+        }
+    }
 
+    public void TrackTarget(Transform target) {
+        this.target = target;
     }
 
     private void OnTriggerEnter2D(Collider2D collider) {

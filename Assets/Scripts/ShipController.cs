@@ -26,12 +26,14 @@ public class ShipController : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         rb = GetComponent<Rigidbody2D>();
-        List<ShipPart> asList = new List<ShipPart>();
-        foreach (ShipPart part in GetComponentsInChildren<ShipPart>()) {
-            asList.Add(part);
-        }
-        RegisterParts(asList);
         cameraManager = FindObjectOfType<CameraManager>();
+        if (parts == null) { // Happens in debug mode
+            List<ShipPart> asList = new List<ShipPart>();
+            foreach (ShipPart part in GetComponentsInChildren<ShipPart>()) {
+                asList.Add(part);
+            }
+            RegisterParts(asList);
+        }
     }
 
     // Update is called once per frame
@@ -137,13 +139,13 @@ public class ShipController : MonoBehaviour
             attacked |= weapon.Attack();
         }
         if (attacked) {
-            cameraManager.AddScreenShake(0.1f);
+            cameraManager.AddScreenShake(0.2f);
         }
     }
 
     public void NotifyPartDestroyed(ShipPart part) {
         parts.Remove(part);
-        cameraManager.AddScreenShake(1f);
+        cameraManager.AddScreenShake(1.5f);
 
         Thrusters thruster = part.GetComponent<Thrusters>();
         if (thruster != null) {

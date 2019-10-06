@@ -2068,7 +2068,7 @@ PrefabInstance:
     - target: {fileID: 7267306364963818123, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: serialized
-      value: Cockpit1,0
+      value: Cockpit1,180
       objectReference: {fileID: 0}
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
@@ -2078,7 +2078,7 @@ PrefabInstance:
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1754078662133136805, guid: fcd00e50033ace8489d59998cc10d88d,
         type: 3}
@@ -9438,6 +9438,7 @@ MonoBehaviour:
   - {fileID: 8659243495627311842, guid: 2183786e0aeb9a84cb307136c45d3c7b, type: 3}
   - {fileID: 8659243495627311842, guid: 874cb3ea998f7c343b238ca789451de0, type: 3}
   - {fileID: 8659243495627311842, guid: 23584c9186afc8549826a9b625af5e34, type: 3}
+  - {fileID: 8659243495627311842, guid: 32c19f27f49490642a75c3c857778a1b, type: 3}
 --- !u!1 &1676948451
 GameObject:
   m_ObjectHideFlags: 0
