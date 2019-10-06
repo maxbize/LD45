@@ -98,6 +98,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   damage: 10
+  trackingForce: 0
+  trackingRot: 0
 --- !u!61 &7439536071427198879
 BoxCollider2D:
   m_ObjectHideFlags: 0

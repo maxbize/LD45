@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,7 +35,7 @@ public class ProjectileWeapon : MonoBehaviour
             GameObject projectile = Instantiate(projectilePrefab, transform.position, tracking ? Quaternion.Euler(0, 0, Random.Range(0, 360)) : transform.rotation);
             projectile.layer = gameObject.layer;
             if (tracking) {
-                if (target == null && levelsManager.levelEnemies != null) {
+                if (target == null) {
                     target = PickTarget();
                 }
                 projectile.GetComponent<Projectile>().TrackTarget(target, transform);
@@ -45,20 +46,25 @@ public class ProjectileWeapon : MonoBehaviour
     }
 
     private Transform PickTarget() {
-        GameObject closest = levelsManager.levelEnemies[0];
-        foreach (GameObject enemy in levelsManager.levelEnemies) {
-            float distToEnemy = Vector2.Distance(enemy.transform.position, transform.position);
-            float distToClosest = Vector2.Distance(closest.transform.position, transform.position);
-            if (distToEnemy < distToClosest) {
-                closest = enemy;
+        if (levelsManager.levelEnemies != null && gameObject.layer == LayerMask.NameToLayer("Friendly")) {
+            GameObject closest = levelsManager.levelEnemies[0];
+            foreach (GameObject enemy in levelsManager.levelEnemies) {
+                float distToEnemy = Vector2.Distance(enemy.transform.position, transform.position);
+                float distToClosest = Vector2.Distance(closest.transform.position, transform.position);
+                if (distToEnemy < distToClosest) {
+                    closest = enemy;
+                }
             }
-        }
 
-        foreach (ShipPart part in closest.GetComponentsInChildren<ShipPart>()) {
-            if (part.partName == "Cockpit") {
-                return part.transform;
+            foreach (ShipPart part in closest.GetComponentsInChildren<ShipPart>()) {
+                if (part.partName == "Cockpit") {
+                    return part.transform;
+                }
             }
+            return closest.transform;
+        } else if (levelsManager.playerShip != null && gameObject.layer == LayerMask.NameToLayer("Hostile")) {
+            return levelsManager.playerShip[0].GetComponentsInChildren<ShipPart>().Single(p => p.partName == "Cockpit").transform;
         }
-        return closest.transform;
+        return null;
     }
 }

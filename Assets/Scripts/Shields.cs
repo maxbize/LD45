@@ -47,6 +47,7 @@ public class Shields : MonoBehaviour
         health = maxHealth;
         shieldSprite.enabled = true;
         active = true;
+        timeForRegen = 0;
     }
 
     private void Deactivate() {

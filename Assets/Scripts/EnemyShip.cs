@@ -56,7 +56,7 @@ public class EnemyShip : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        if (!control) {
+        if (!control || playerShip == null) {
             shipController.Move(false, false, false, false, false, false);
             return;
         }
@@ -69,10 +69,9 @@ public class EnemyShip : MonoBehaviour
         } else if (moveMode == MoveMode.AlwaysRotate) {
             shipController.Move(false, false, false, false, true, false);
         } else if (moveMode == MoveMode.FacePlayer) {
-            RotateTowardsPlayer();
+            RotateTowardsPlayer(false);
         } else if (moveMode == MoveMode.SeekPlayer) {
-            RotateTowardsPlayer();
-
+            RotateTowardsPlayer(true);
         }
 
         // Handle attack
@@ -95,12 +94,12 @@ public class EnemyShip : MonoBehaviour
         shipController.Move(true, false, false, false, false, false);
     }
 
-    private void RotateTowardsPlayer() {
+    private void RotateTowardsPlayer(bool moveForward) {
         Vector2 toPlayer = (playerShip.position - cockpit.position).normalized;
         if (Vector3.Cross(toPlayer, cockpit.up).z < 0) {
-            shipController.Move(false, false, false, false, true, false);
+            shipController.Move(moveForward, false, false, false, true, false);
         } else {
-            shipController.Move(false, false, false, false, false, true);
+            shipController.Move(moveForward, false, false, false, false, true);
         }
     }
 

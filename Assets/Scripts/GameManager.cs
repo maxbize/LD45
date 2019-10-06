@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         levelsManager = FindObjectOfType<LevelsManager>();
-        //mainMenuPanel.SetActive(true); // Re-enable before shipping :)
+        mainMenuPanel.SetActive(true); // Re-enable before shipping :)
         shipBuilderPanel.SetActive(false);
         if (!mainMenuPanel.activeSelf) {
             Invoke("OnNewGameButton", 0); // Auto-press if we've hidden main menu to enter the game faster. Using Invoke to let other scripts Start

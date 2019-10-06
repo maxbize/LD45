@@ -100,6 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   damage: 50
+  trackingForce: 0
+  trackingRot: 0
 --- !u!50 &7439536071427198880
 Rigidbody2D:
   serializedVersion: 4

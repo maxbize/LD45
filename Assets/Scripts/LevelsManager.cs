@@ -11,11 +11,13 @@ public class LevelsManager : MonoBehaviour
     public int currentLevel; // Here for debugging ;)
     public GameObject combatUI;
     public GameObject levelVictoryUI;
+    public GameObject gameVictoryUI;
 
     private GameManager gameManager;
     private ShipBuilderManager builder;
     public List<GameObject> levelEnemies { get; set; } // HACK! Public so we can find enemies to track
-    private List<GameObject> playerShip; // HACK! Don't need a list ;)
+    public List<GameObject> playerShip; // HACK! Don't need a list ;) Also don't need public
+    private bool wonLevel = false;
 
     public class LevelData
     {
@@ -42,17 +44,6 @@ public class LevelsManager : MonoBehaviour
         }
     }
 
-    private List<LevelData> levelData = new List<LevelData>() {
-        //            w, h,   cockpits,      thrusters,     armors,        machine guns,  cannons,       shields,       missiles
-        new LevelData(3, 9, new[] {100,0,0}, new[] {100,0,0}, new[] {100,0,0}, new[] {100,0,0}, new[] {100,0,0}, new[] {100,0,0}, new[] {100,0,0}),
-        new LevelData(1, 2, new[] {1,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
-        new LevelData(1, 2, new[] {1,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
-        new LevelData(2, 3, new[] {1,0,0}, new[] {2,0,0}, new[] {0,0,0}, new[] {2,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
-        new LevelData(3, 3, new[] {1,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
-        new LevelData(4, 4, new[] {0,1,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
-        new LevelData(5, 5, new[] {0,1,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}, new[] {0,0,0}),
-    };
-
     // Start is called before the first frame update
     void Start() {
         builder = FindObjectOfType<ShipBuilderManager>();
@@ -63,14 +54,27 @@ public class LevelsManager : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if (!levelVictoryUI.activeSelf) {
-            if (levelEnemies != null && levelEnemies.All(e => e == null)) {
-                Debug.Log("Detected win on level " + currentLevel);
-                currentLevel++;
-                ActivateLevelDoneScreen("Well done Captain. Your success is a personal victory.");
-            } else if (playerShip != null && playerShip.All(s => s == null)) {
+        if (!levelVictoryUI.activeSelf && !gameVictoryUI.activeSelf) {
+            if (playerShip != null && playerShip.All(s => s == null)) {
                 Debug.Log("Detected loss on level " + currentLevel);
                 ActivateLevelDoneScreen("Your failure was expected. Grab some scraps and return to base.");
+            } else if (levelEnemies != null && levelEnemies.All(e => e == null)) {
+                Debug.Log("Detected win on level " + currentLevel);
+                currentLevel++;
+                wonLevel = true;
+                if (currentLevel == transform.childCount) {
+                    gameVictoryUI.SetActive(true);
+                    combatUI.SetActive(false);
+                    foreach (EnemyShip enemy in levelEnemies.Where(e => e != null).Select(e => e.GetComponent<EnemyShip>())) {
+                        enemy.control = false;
+                    }
+                    foreach (HumanShipInput human in playerShip.Where(e => e != null).Select(e => e.GetComponent<HumanShipInput>())) {
+                        human.control = false;
+                    }
+
+                } else {
+                    ActivateLevelDoneScreen("Well done Captain. Your success is a personal victory.");
+                }
             }
         }
     }
@@ -89,10 +93,14 @@ public class LevelsManager : MonoBehaviour
         if (player != null) {
             Destroy(player.gameObject);
         }
+        foreach (Projectile proj in FindObjectsOfType<Projectile>()) {
+            Destroy(proj.gameObject);
+        }
         combatUI.SetActive(false);
         levelVictoryUI.SetActive(false);
         gameManager.shipBuilderPanel.SetActive(true); // HACK!
-        builder.Initialize(levelData[currentLevel]);
+        builder.Initialize(transform.GetChild(currentLevel).GetComponent<LevelSetup>().ToLevelData(), !wonLevel);
+        wonLevel = false;
     }
 
     public void StartNextLevelCombat() {

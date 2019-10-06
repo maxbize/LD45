@@ -34,6 +34,7 @@ public class ShipBuilderManager : MonoBehaviour
     private Dictionary<string, int> inventory; // [partName + mark -> num parts]. Not a dict to force an order
     private LevelsManager levelManager;
     private CameraManager cameraManager;
+    private string serialized;
 
     // Start is called before the first frame update
     void Start() {
@@ -42,17 +43,22 @@ public class ShipBuilderManager : MonoBehaviour
         cameraManager = FindObjectOfType<CameraManager>();
     }
 
-    public void Initialize(LevelsManager.LevelData levelData) {
+    public void Initialize(LevelsManager.LevelData levelData, bool retrying) {
         this.levelData = levelData;
         partScrollIndex = 0;
         gridParts = new ShipPart[levelData.shipWidth, levelData.shipHeight];
         nothingUI.gameObject.SetActive(false);
         CreateInventory();
+        if (retrying && serialized != null) {
+            RebuildShip(serialized);
+        }
         DisableSelectedSlotUI();
         SetupPartSelectionUI();
         SetupSelectedPartUI(0);
         SetupBuilderBackground();
-        playButton.interactable = false;
+        if (inventory.ContainsKey("Cockpit1")) {
+            playButton.interactable = false;
+        }
     }
 
     // Update is called once per frame
@@ -259,7 +265,8 @@ public class ShipBuilderManager : MonoBehaviour
     }
 
     public void OnPlayButton() {
-        LogShipSerialized();
+        serialized = GetShipSerialized();
+        Debug.Log(serialized);
         if (inFlightPart != null) {
             Destroy(inFlightPart.gameObject);
         }
@@ -274,7 +281,7 @@ public class ShipBuilderManager : MonoBehaviour
         cameraManager.TrackTargets(ship);
     }
 
-    private void LogShipSerialized() {
+    private string GetShipSerialized() {
         StringBuilder sb = new StringBuilder();
         for (int x = 0; x < levelData.shipWidth; x++) {
             for (int y = 0; y < levelData.shipHeight; y++) {
@@ -289,7 +296,39 @@ public class ShipBuilderManager : MonoBehaviour
             sb.Append("next,next,");
         }
         sb.Length -= ",next,next,".Length; // Trim off the last bits
-        Debug.Log(sb.ToString());
+        return sb.ToString();
+    }
+
+    private void RebuildShip(string serialized) {
+        if (serialized == null) {
+            Debug.LogError("Enemy ship instance but no state to build from for: " + name);
+        }
+        Quaternion cachedRot = transform.rotation;
+        ShipFactory sf = FindObjectOfType<ShipFactory>();
+        Dictionary<string, GameObject> partMap = sf.partPrefabs.ToDictionary(p => p.name, p => p);
+        int x = 0;
+        int y = 0;
+        string[] split = serialized.Split(',');
+        for (int i = 0; i < split.Length; i += 2) {
+            string partName = split[i];
+            if (partName == "next") {
+                y = 0;
+                x++;
+                continue;
+            }
+            if (partName != "null") {
+                Quaternion partRotation = Quaternion.Euler(0, 0, int.Parse(split[i + 1]));
+                GameObject partObj = Instantiate(partMap[partName], transform.position + new Vector3(x, y, 0), partRotation);
+                ShipPart part = partObj.GetComponent<ShipPart>();
+                inventory[part.partName + part.mark]--;
+                if (inventory[part.partName + part.mark] == 0) {
+                    inventory.Remove(part.partName + part.mark);
+                }
+                gridParts[x, y] = part;
+            }
+            y++;
+        }
+        transform.rotation = cachedRot;
     }
 }
  

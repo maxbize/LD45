@@ -63,7 +63,9 @@ public class Projectile : MonoBehaviour
                 Destroy(gameObject);
             }
         } else if (projectile != null) {
-            // Ignore for now
+            if (target != null) {
+                Destroy(gameObject); // Missiles get killed by projectiles
+            }
         } else {
             Debug.Log("I don't know what this projectile just hit: " + collider.gameObject);
         }

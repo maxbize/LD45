@@ -58,7 +58,7 @@ public class CameraManager : MonoBehaviour
         targetPos += primaryTarget.GetComponent<Rigidbody2D>().velocity * velocityWeight;
         Vector2 secondaryPull = Vector2.zero;
         foreach (GameObject secondaryTarget in secondaryTargets.Where(t => t != null)) {
-            secondaryPull += ((Vector2)secondaryTarget.transform.position - targetPos);
+            secondaryPull += ((Vector2)secondaryTarget.GetComponent<Rigidbody2D>().worldCenterOfMass - targetPos);
         }
         targetPos += secondaryPull * secondaryWeight;
         Vector2 primaryToTargetPos = targetPos - (Vector2)primaryTarget.transform.position;
