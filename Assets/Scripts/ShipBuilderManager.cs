@@ -18,6 +18,7 @@ public class ShipBuilderManager : MonoBehaviour
     public Button rotatePartButton;
     public Button removePartButton;
     public Button playButton;
+    public Color selectedPartColor;
     // Selected Part
     public TMP_Text SP_title;
     public TMP_Text SP_mark;
@@ -67,6 +68,10 @@ public class ShipBuilderManager : MonoBehaviour
             HandleClick();
         }
 
+        if (Input.GetMouseButtonDown(1) && builderUI.gameObject.activeSelf) {
+            HandleRightClick();
+        }
+
         if (inFlightPart != null) {
             TrackPart();
         }
@@ -113,6 +118,7 @@ public class ShipBuilderManager : MonoBehaviour
                 partSelectButtons[i].gameObject.SetActive(true);
                 ShipPart part = shipFactory.GetPrefabByNameAndMark(invKeys[i + partScrollIndex]);
                 partSelectButtons[i].GetComponentInChildren<TMP_Text>().text = part.partName + " MK" + part.mark;
+                partSelectButtons[i].GetComponent<Image>().color = part == selectedPart ? selectedPartColor : Color.white;
             }
         }
     }
@@ -127,8 +133,12 @@ public class ShipBuilderManager : MonoBehaviour
         selectedPart = shipFactory.GetPrefabByNameAndMark(invKeys[partScrollIndex + buttonIndex]).GetComponent<ShipPart>();
         SP_title.text = selectedPart.partName;
         SP_mark.text = "MK " + selectedPart.mark;
-        SP_place.text = "Place (" + inventory[invKeys[partScrollIndex + buttonIndex]] + ")";
+        SP_place.text = "Inventory: " + inventory[invKeys[partScrollIndex + buttonIndex]];
         SP_icon.sprite = selectedPart.GetComponent<SpriteRenderer>().sprite;
+        foreach (RectTransform button in partSelectButtons) {
+            button.GetComponent<Image>().color = Color.white;
+        }
+        partSelectButtons[buttonIndex].GetComponent<Image>().color = selectedPartColor;
     }
 
     private void TrackPart() {
@@ -157,6 +167,16 @@ public class ShipBuilderManager : MonoBehaviour
         cam.transform.position = camPos;
     }
 
+    private void HandleRightClick() {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        int x = Mathf.RoundToInt(mousePos.x);
+        int y = Mathf.RoundToInt(mousePos.y);
+        if (x < 0 || x >= levelData.shipWidth || y < 0 || y >= levelData.shipHeight) {
+            return;
+        }
+        RemovePartFromGrid(x, y);
+    }
+
     private void HandleClick() {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         int x = Mathf.RoundToInt(mousePos.x);
@@ -171,7 +191,7 @@ public class ShipBuilderManager : MonoBehaviour
         }
 
         if (inFlightPart == null) {
-
+            gridParts[x, y].transform.rotation = Quaternion.Euler(0, 0, gridParts[x, y].transform.rotation.eulerAngles.z - 90);
         } else {
             RemovePartFromGrid(x, y);
             gridParts[x, y] = inFlightPart;
@@ -187,7 +207,7 @@ public class ShipBuilderManager : MonoBehaviour
                 SetupPartSelectionUI();
                 SetupSelectedPartUI(0);
             } else {
-                SP_place.text = "Place (" + inventory[key] + ")";
+                SP_place.text = "Inventory: " + inventory[key];
             }
             if (inFlightPart.partName == "Cockpit") {
                 playButton.interactable = true;
@@ -195,7 +215,7 @@ public class ShipBuilderManager : MonoBehaviour
             inFlightPart = null;
         }
         if (gridParts[x, y] != null) {
-            gridSlotSelectedObj.gameObject.SetActive(true);
+            //gridSlotSelectedObj.gameObject.SetActive(true);
             removePartButton.interactable = true;
             rotatePartButton.interactable = true;
             gridSlotSelectedObj.transform.position = new Vector2(x, y);
@@ -217,6 +237,9 @@ public class ShipBuilderManager : MonoBehaviour
             }
             if (gridParts[x, y].partName == "Cockpit") {
                 playButton.interactable = false;
+            }
+            if (key == GetInventoryKey(selectedPart)) {
+                SP_place.text = "Inventory: " + inventory[key];
             }
             Destroy(gridParts[x, y].gameObject);
         }
