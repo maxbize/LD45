@@ -36,7 +36,7 @@ public class Shields : MonoBehaviour
     }
 
     public void TakeDamage(int amount) {
-        Debug.LogFormat("Took {0} damage. Remaining shields: {1}", amount, health);
+        //Debug.LogFormat("Took {0} damage. Remaining shields: {1}", amount, health);
         health -= amount;
         if (health <= 0) {
             Deactivate();

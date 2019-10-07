@@ -1317,7 +1317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166b69b3f00b910408204469b653d8cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLevel: 1
+  currentLevel: 7
   combatUI: {fileID: 1964471919}
   levelVictoryUI: {fileID: 840843985}
   gameVictoryUI: {fileID: 109179027}

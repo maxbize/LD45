@@ -100,6 +100,8 @@ MonoBehaviour:
   damage: 10
   trackingForce: 0
   trackingRot: 0
+  impactPS: {fileID: 1932386362290529084, guid: ba342b2e9e3c20840a5e342d03662bb4,
+    type: 3}
 --- !u!61 &7439536071427198879
 BoxCollider2D:
   m_ObjectHideFlags: 0

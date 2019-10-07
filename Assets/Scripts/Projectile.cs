@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour
     public int damage;
     public float trackingForce;
     public float trackingRot;
+    public GameObject impactPS;
 
     private bool alreadyDamaged = false; // Sometimes we hit two things. Only count one of them
     private Rigidbody2D rb;
@@ -43,6 +44,7 @@ public class Projectile : MonoBehaviour
         bool hitShields = collider is CircleCollider2D && shields != null;
         if (hitShields) {
             if (shields.active && !alreadyDamaged) {
+                SpawnImpact(collider);
                 shields.TakeDamage(damage);
                 Vector2 toProjectile = (transform.position - shields.transform.position).normalized;
                 rb.velocity = toProjectile * rb.velocity.magnitude;
@@ -60,18 +62,46 @@ public class Projectile : MonoBehaviour
             if (!alreadyDamaged && !hitShields) {
                 shipPart.TakeDamage(damage);
                 alreadyDamaged = true;
-                Destroy(gameObject);
+                Die(collider);
             }
         } else if (projectile != null) {
             if (target != null) {
-                Destroy(gameObject); // Missiles get killed by projectiles
+                Die(collider); // Missiles get killed by projectiles
             }
         } else {
             Debug.Log("I don't know what this projectile just hit: " + collider.gameObject);
         }
     }
 
+    private void SpawnImpact(Collider2D collider) {
+        if (collider == null) {
+            Instantiate(impactPS, transform.position, transform.rotation);
+        } else {
+            Vector3 pos = collider.ClosestPoint(transform.position);
+            Quaternion rot = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 180 + Random.Range(-30, 30));
+            Instantiate(impactPS, pos, rot);
+        }
+    }
+
+    private void Die(Collider2D collider) {
+        SpawnImpact(collider);
+        ParticleSystem[] systems = GetComponentsInChildren<ParticleSystem>();
+        if (systems.Length > 0) {
+            foreach (ParticleSystem system in systems) {
+                ParticleSystem.EmissionModule em = system.emission;
+                em.enabled = false;
+            }
+            gameObject.AddComponent<AutoDestroyPS>();
+            GetComponent<SpriteRenderer>().enabled = false;
+            GetComponent<Collider2D>().enabled = false;
+            GetComponent<Rigidbody2D>().velocity *= -1;
+            enabled = false;
+        } else {
+            Destroy(gameObject);
+        }
+    }
+
     private void Die() {
-        Destroy(gameObject);
+        Die(null);
     }
 }
