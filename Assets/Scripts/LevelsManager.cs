@@ -15,8 +15,8 @@ public class LevelsManager : MonoBehaviour
 
     private GameManager gameManager;
     private ShipBuilderManager builder;
-    public List<GameObject> levelEnemies { get; set; } // HACK! Public so we can find enemies to track
-    public List<GameObject> playerShip; // HACK! Don't need a list ;) Also don't need public
+    public List<GameObject> levelEnemies { get; private set; } // HACK! Public so we can find enemies to track
+    public List<GameObject> playerShip { get; private set; } // HACK! Don't need a list ;) Also don't need public
     private bool wonLevel = false;
 
     public class LevelData
