@@ -13,12 +13,6 @@ public class ShipController : MonoBehaviour
     public float correctionDrag; // Apply a drag to nullify velocity not in our forward direction
 
     private List<ShipPart> parts;
-    private List<Thrusters> forwardThrusters = new List<Thrusters>();
-    private List<Thrusters> backThrusters = new List<Thrusters>();
-    private List<Thrusters> rightThrusters = new List<Thrusters>();
-    private List<Thrusters> leftThrusters = new List<Thrusters>();
-    private List<Thrusters> positiveTorqueThrusters = new List<Thrusters>(); // Thrusters used in right turn - can be on both sides
-    private List<Thrusters> negativeTorqueThrusters = new List<Thrusters>(); // Thrusters used in left turn - can be on both sides
     private List<Thrusters> thrusters = new List<Thrusters>();
     private List<ProjectileWeapon> weapons = new List<ProjectileWeapon>();
     private Rigidbody2D rb;
@@ -67,24 +61,6 @@ public class ShipController : MonoBehaviour
             Thrusters partThrusters = part.GetComponent<Thrusters>();
             if (partThrusters != null) {
                 thrusters.Add(partThrusters);
-                float partZ = part.transform.rotation.eulerAngles.z;
-                int dir = Mathf.RoundToInt(partZ / 90);
-                if (dir == 0) {
-                    forwardThrusters.Add(partThrusters);
-                } else if (dir == 2 || dir == -2) {
-                    backThrusters.Add(partThrusters);
-                } else { 
-                    if (Vector3.Cross(part.transform.up, (Vector2)part.transform.position - rb.worldCenterOfMass).z > 0) {
-                        negativeTorqueThrusters.Add(partThrusters);
-                    } else {
-                        positiveTorqueThrusters.Add(partThrusters);
-                    }
-                    if (dir == 1 || dir == -3) {
-                        leftThrusters.Add(partThrusters);
-                    } else {
-                        rightThrusters.Add(partThrusters);
-                    }
-                }
             } else if (part.GetComponent<ProjectileWeapon>() != null) {
                 weapons.Add(part.GetComponent<ProjectileWeapon>());
             }
@@ -97,36 +73,31 @@ public class ShipController : MonoBehaviour
         }
     }
 
-    // Each direction can be on simultaneously because they activate different thrusters
-    public void Move(bool up, bool down, bool right, bool left, bool rotatePositive, bool rotateNegative) {
-        List<Thrusters> activeThrusters = new List<Thrusters>();
+    // Strafe and rotation independent. Input will be normalized. Rotate should be negative, zero, or positive
+    // Strafe is given priority over rotate? Can we do both?
+    public void Move(Vector2 strafe, int rotate) {
+        strafe.Normalize();
+        rb.angularDrag = rotate == 0 ? notRotatingRotationalDrag : rotatingRotationalDrag;
 
-        if (up) {
-            activeThrusters.AddRange(forwardThrusters);
-        }
-        if (down) {
-            activeThrusters.AddRange(backThrusters);
-        }
-        if (right) {
-            activeThrusters.AddRange(rightThrusters);
-        }
-        if (left) {
-            activeThrusters.AddRange(leftThrusters);
-        }
-        rb.angularDrag = notRotatingRotationalDrag;
-        if (rotatePositive) {
-            rb.angularDrag = rotatingRotationalDrag;
-            activeThrusters.AddRange(positiveTorqueThrusters);
-        }
-        if (rotateNegative) {
-            rb.angularDrag = rotatingRotationalDrag;
-            activeThrusters.AddRange(negativeTorqueThrusters);
-        }
-
+        Vector3 cm = rb.worldCenterOfMass;
         foreach (Thrusters thruster in thrusters) {
-            if (activeThrusters.Contains(thruster)) {
-                thruster.ActivateThruster();
-                rb.AddForceAtPosition(thruster.transform.up * thruster.thrustForce, thruster.transform.position);
+            if (strafe.magnitude > 0 && rotate != 0) {
+                Quaternion strafeRot = Quaternion.LookRotation(Vector3.forward, strafe);
+
+                Vector3 toCm = cm - thruster.transform.position;
+                Vector3 orthoCm = Vector3.Cross(toCm, rotate > 0 ? Vector3.back : Vector3.forward);
+                Quaternion rotateRot = Quaternion.LookRotation(Vector3.forward, orthoCm);
+
+                thruster.ActivateThruster(Quaternion.Lerp(strafeRot, rotateRot, 0.5f));
+                rb.AddForceAtPosition(thruster.childSprite.transform.up * thruster.thrustForce, thruster.transform.position);
+            } else if (strafe.magnitude > 0) {
+                thruster.ActivateThruster(Quaternion.LookRotation(Vector3.forward, strafe));
+                rb.AddForceAtPosition(thruster.childSprite.transform.up * thruster.thrustForce, thruster.transform.position);
+            } else if (rotate != 0) {
+                Vector3 toCm = cm - thruster.transform.position;
+                Vector3 orthoCm = Vector3.Cross(toCm, rotate > 0 ? Vector3.back : Vector3.forward);
+                thruster.ActivateThruster(Quaternion.LookRotation(Vector3.forward, orthoCm));
+                rb.AddForceAtPosition(thruster.childSprite.transform.up * thruster.thrustForce, thruster.transform.position);
             } else {
                 thruster.DisableThruster();
             }
@@ -153,10 +124,6 @@ public class ShipController : MonoBehaviour
 
         Thrusters thruster = part.GetComponent<Thrusters>();
         if (thruster != null) {
-            forwardThrusters.Remove(thruster);
-            backThrusters.Remove(thruster);
-            positiveTorqueThrusters.Remove(thruster);
-            negativeTorqueThrusters.Remove(thruster);
             thrusters.Remove(thruster);
         }
 

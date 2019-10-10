@@ -10,12 +10,8 @@ public class HumanShipInput : MonoBehaviour
     public bool control;
 
     private ShipController shipController;
-    private bool up;
-    private bool down;
-    private bool right;
-    private bool left;
-    private bool posRotate;
-    private bool negRotate;
+    private Vector2 strafe;
+    private int rotate;
     private bool attack;
 
     // Start is called before the first frame update
@@ -26,18 +22,27 @@ public class HumanShipInput : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        up = Input.GetKey(KeyCode.W) && control;
-        down = Input.GetKey(KeyCode.S) && control;
-        right = Input.GetKey(KeyCode.D) && control;
-        left = Input.GetKey(KeyCode.A) && control;
-        posRotate = Input.GetKey(KeyCode.Q) && control;
-        negRotate = Input.GetKey(KeyCode.E) && control;
+
+        if (control) {
+            strafe = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            rotate = 0;
+            if (Input.GetKey(KeyCode.Q)) {
+                rotate--;
+            }
+            if (Input.GetKey(KeyCode.E)) {
+                rotate++;
+            }
+        } else {
+            strafe = Vector2.zero;
+            rotate = 0;
+            attack = false;
+        }
 
         attack = Input.GetKey(KeyCode.Space) && control;
     }
 
     private void FixedUpdate() {
-        shipController.Move(up, down, right, left, posRotate, negRotate);
+        shipController.Move(strafe, rotate);
         if (attack) {
             shipController.Attack();
         }

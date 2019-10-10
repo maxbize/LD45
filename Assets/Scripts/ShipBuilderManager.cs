@@ -19,6 +19,7 @@ public class ShipBuilderManager : MonoBehaviour
     public Button removePartButton;
     public Button playButton;
     public Color selectedPartColor;
+    public Sprite thrusterButtonSprite;
     // Selected Part
     public TMP_Text SP_title;
     public TMP_Text SP_mark;
@@ -135,6 +136,9 @@ public class ShipBuilderManager : MonoBehaviour
         SP_mark.text = "MK " + selectedPart.mark;
         SP_place.text = "Inventory: " + inventory[invKeys[partScrollIndex + buttonIndex]];
         SP_icon.sprite = selectedPart.GetComponent<SpriteRenderer>().sprite;
+        if (selectedPart.partName == "Thrusters") {
+            SP_icon.sprite = thrusterButtonSprite;
+        }
         foreach (RectTransform button in partSelectButtons) {
             button.GetComponent<Image>().color = Color.white;
         }
@@ -192,6 +196,11 @@ public class ShipBuilderManager : MonoBehaviour
 
         if (inFlightPart == null) {
             gridParts[x, y].transform.rotation = Quaternion.Euler(0, 0, gridParts[x, y].transform.rotation.eulerAngles.z - 90);
+            Thrusters gridThrusters = gridParts[x, y].GetComponent<Thrusters>();
+            if (gridThrusters != null) {
+                gridThrusters.ActivateThruster(gridParts[x, y].transform.rotation);
+                gridThrusters.DisableThruster();
+            }
         } else {
             RemovePartFromGrid(x, y);
             gridParts[x, y] = inFlightPart;

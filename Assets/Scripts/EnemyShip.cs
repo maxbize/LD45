@@ -57,7 +57,7 @@ public class EnemyShip : MonoBehaviour
 
     private void FixedUpdate() {
         if (!control || playerShip == null) {
-            shipController.Move(false, false, false, false, false, false);
+            shipController.Move(Vector2.zero, 0);
             return;
         }
 
@@ -65,13 +65,13 @@ public class EnemyShip : MonoBehaviour
         if (moveMode == MoveMode.Static) {
 
         } else if (moveMode == MoveMode.AlwaysForward) {
-            MoveForward();
+            Debug.LogWarning("Deprecated");
         } else if (moveMode == MoveMode.AlwaysRotate) {
-            shipController.Move(false, false, false, false, true, false);
+            shipController.Move(Vector2.zero, 1);
         } else if (moveMode == MoveMode.FacePlayer) {
-            RotateTowardsPlayer(false);
+            RotateTowardsPlayer(Vector2.zero);
         } else if (moveMode == MoveMode.SeekPlayer) {
-            RotateTowardsPlayer(true);
+            RotateTowardsPlayer(playerShip.transform.position - transform.position);
         }
 
         // Handle attack
@@ -90,17 +90,9 @@ public class EnemyShip : MonoBehaviour
         }
     }
 
-    private void MoveForward() {
-        shipController.Move(true, false, false, false, false, false);
-    }
-
-    private void RotateTowardsPlayer(bool moveForward) {
+    private void RotateTowardsPlayer(Vector2 strafe) {
         Vector2 toPlayer = (playerShip.position - cockpit.position).normalized;
-        if (Vector3.Cross(toPlayer, cockpit.up).z < 0) {
-            shipController.Move(moveForward, false, false, false, true, false);
-        } else {
-            shipController.Move(moveForward, false, false, false, false, true);
-        }
+        shipController.Move(strafe, Vector3.Cross(toPlayer, cockpit.up).z < 0 ? -1 : 1);
     }
 
     private void BuildShip() {

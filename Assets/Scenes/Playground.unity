@@ -1317,11 +1317,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166b69b3f00b910408204469b653d8cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLevel: 1
+  currentLevel: 8
   combatUI: {fileID: 1964471919}
   levelVictoryUI: {fileID: 840843985}
   gameVictoryUI: {fileID: 109179027}
-  playerShip: []
 --- !u!4 &183565924
 Transform:
   m_ObjectHideFlags: 0
@@ -3545,7 +3544,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &840843986
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4439,6 +4438,8 @@ MonoBehaviour:
   removePartButton: {fileID: 253578204}
   playButton: {fileID: 255188839}
   selectedPartColor: {r: 0.53626734, g: 0.96720374, b: 0.9716981, a: 1}
+  thrusterButtonSprite: {fileID: 8405065620779318965, guid: d52d3141d54fee248be06aa8a7085b5d,
+    type: 3}
   SP_title: {fileID: 131385375}
   SP_mark: {fileID: 365175618}
   SP_place: {fileID: 886693233}
@@ -4972,7 +4973,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -11373,7 +11374,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 6
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

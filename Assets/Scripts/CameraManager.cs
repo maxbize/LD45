@@ -83,7 +83,7 @@ public class CameraManager : MonoBehaviour
 
         // Snap to targets
         transform.position = (Vector3)targetPos + Vector3.back * 10 + (Vector3)shake;
-        transform.rotation = targetRot;
+        //transform.rotation = targetRot;
         cam.orthographicSize = targetSize;
         if (debug) {
             debugMarker.transform.position = targetPos;
